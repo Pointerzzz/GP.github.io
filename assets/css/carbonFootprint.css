@@ -1,0 +1,243 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', sans-serif;
+    overflow-x: hidden;
+    background-color: #f5f5f5;
+}
+
+/* section3 */
+.section3{
+    position: relative;
+}
+.section3 .total{
+    display: flex;
+}
+.section3 .left{
+    width: 60%;
+}
+.section3 .left .road{
+    margin-left:185px;
+    width:40%;
+    height: 120%;
+}
+.section3 .left .car{
+    position: absolute;
+    width:3%;
+}
+
+/* part1 */
+.section3 .left .img1{
+    top:15px;
+    left:320px;
+    position: absolute;
+    width:3%;
+}
+.section3 .left .img2{
+    top:10px;
+    left:370px;
+    position: absolute;
+    width:3%;
+}
+.text1{
+    position: absolute;
+    top:63px;
+    left:356px;
+    font-weight: 700;
+}
+
+/* part2 */
+.section3 .left .img3{
+    top:290px;
+    left:440px;
+    position: absolute;
+    width:5%;
+}
+.text2{
+    position: absolute;
+    top:378px;
+    left:437px;
+    font-weight: 700;
+}
+
+/* part3 */
+.section3 .left .img4{
+    top:600px;
+    left:95px;
+    position: absolute;
+    width:5%;
+}
+.text3{
+    position: absolute;
+    top:688px;
+    left:85px;
+    font-weight: 700;
+}
+
+/* part4 */
+.section3 .left .img5{
+    top:880px;
+    left:335px;
+    position: absolute;
+    width:5%;
+}
+.text4{
+    position: absolute;
+    top:960px;
+    left:335px;
+    font-weight: 700;
+}
+
+/* part3 */
+.section3 .left .img6{
+    top:1150px;
+    left:450px;
+    position: absolute;
+    width:4%;
+}
+.text5{
+    position: absolute;
+    top:1220px;
+    left:450px;
+    font-weight: 700;
+}
+
+
+.section3 .right{
+    width:40%;
+}
+
+.right {
+    flex: 1;
+    position: relative;
+    padding: 20px;
+}
+
+.content-box {
+    position: absolute;
+    right: 20px;
+    width: 115%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    margin-bottom: 20px;
+    border-left: 5px solid #4CAF50;
+}
+
+.content-box.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.content-box h3 {
+    color: #2E7D32;
+    margin-top: 0;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #A5D6A7;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.box-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.box-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.box-text {
+    flex: 1;
+}
+
+.box-text p {
+    margin: 0 0 10px 0;
+    line-height: 1.6;
+}
+
+.box-text ul {
+    margin: 0 0 15px 0;
+    padding-left: 20px;
+}
+
+.box-text li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* 根据屏幕大小调整样式 */
+@media (min-width: 768px) {
+    .box-content {
+        flex-direction: row;
+    }
+    
+    .box-image {
+        width: 40%;
+        max-height: none;
+        margin-right: 20px;
+        margin-bottom: 0;
+    }
+    
+    .box-text {
+        width: 60%;
+    }
+}
+
+/* 为了方便与左侧茶叶位置对齐，注释掉固定位置
+#box1 { top: 10%; }
+#box2 { top: 28%; }
+#box3 { top: 46%; }
+#box4 { top: 64%; }
+#box5 { top: 82%; }
+*/
+/* 所有盒子初始隐藏并位于右侧外部 */
+.content-box {
+    right: -600px;
+    top: 50%;
+    transform: translateY(-50%) translateX(50px);
+}
+
+/* 激活时的盒子位置，根据滚动位置动态设置 */
+.content-box.active {
+    right: 20px;
+    transform: translateY(-50%) translateX(0);
+}
+
+.section4{
+    margin-top: 535px;
+}
+.section4 div{
+    position:absolute;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #f2fed9;
+    width: 90%;
+    border-radius: 10px;
+    left:88px;
+}
+.section4 h1{
+    font-family: cursive,Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: xx-large;
+    color: #2E7D32;
+}
+.section4 img{
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+ 

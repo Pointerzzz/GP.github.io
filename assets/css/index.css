@@ -1,0 +1,136 @@
+/* fonts */
+@font-face {
+    font-family: myFont;
+    src: url('Myriad_Variable_Concept.otf') format('opentype'),
+         url('Myriad_Variable_Concept.otf') format('otf');
+    font-display: swap; /* 添加字体加载策略 */
+}
+
+
+/* Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: myFont, Arial, sans-serif !important; /* 添加后备字体 */
+    background-color: rgb(237, 243, 235);
+}
+
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(133, 161, 137);
+    /* 背景颜色，可以根据需要进行调整 */
+    z-index: 999999;
+}
+
+#loader img {
+    padding-top: 100px;
+    width: 40% !important;
+    height: auto;
+}
+
+/* 头图部分 */
+.section0 img {
+    width: 100%;
+}
+
+.container {
+    width: 100%;
+    max-width: 1800px;
+    /* 增加到1.5倍 */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title-section {
+    text-align: center;
+    margin-bottom: 40px;
+    /* 增加标题下方空间 */
+}
+
+.main-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 2.5em;
+    color: #2E7D32;
+    /* 深绿色 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    background: linear-gradient(120deg, #2E7D32, #388E3C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+}
+
+.main-title::before {
+    content: '🍃';
+    /* 添加茶叶emoji装饰 */
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.main-title::after {
+    content: '🍃';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%) scaleX(-1);
+    /* 水平翻转 */
+}
+
+.sub-title {
+    font-size: 1.5em;
+    color: #388E3C;
+    /* 绿色 */
+    margin-top: 20px;
+    text-align: center;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+
+.map-container {
+    width: 100%;
+    height: 900px;
+    /* 增加到1.5倍 */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.amap-info-content {
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.amap-info-content h3 {
+    margin: 0 0 10px 0;
+    color: #2E7D32;
+    font-weight: bold;
+}
+
+.amap-info-content p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.tea-marker {
+    width: 32px;
+    height: 32px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}

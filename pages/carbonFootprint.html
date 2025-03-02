@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>碳足迹</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
+    <link rel="stylesheet" type="text/css" href="../assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/optimize.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/carbonFootprint.css">
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=e769a3af2b315d06adf04e42841ec191"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            var loader = document.getElementById('loader');
+
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loader">
+        <img src="../img/loader.gif" alt="Loading...">
+    </div>
+
+    <div class="header">
+        <div>
+            <nav class="navbar navbar-expand-md">
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="nav-list navbar-nav ms-auto">
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="../index.html">
+                                    <div class="nav-link">首页</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="optimize.html">
+                                    <div class="nav-link">目标优化</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="carbonFootprint.html">
+                                    <div class="nav-link">碳足迹</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">下载中心</div>
+                                </a>
+                                <ul>
+                                    <li><a href="download_model.html">
+                                            <div><img src="../img/icon2.png" alt="">模型下载</div>
+                                        </a></li>
+                                    <li><a href="download_data.html">
+                                            <div><img src="../img/icon2.png" alt="">数据下载</div>
+                                        </a></li>
+                                    <li><a href="download_png.html">
+                                            <div><img src="../img/icon2.png" alt="">性能图片下载</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <section class="section3">
+        <div class="total">
+            <div class="left">
+                <img src="../img/road.png" alt="" class="road">
+                <img src="../img/茶叶.png" alt="" class="car">
+                <div class="part1">
+                    <p class="text1">原材料获取阶段</p>
+                    <img src="../img/人力.png" alt="" class="img1">
+                    <img src="../img/肥料.png" alt="" class="img2">
+                </div>
+                <div>
+                    <p class="text2">茶叶加工阶段</p>
+                    <img src="../img/茶叶加工.png" alt="" class="img3">
+                </div>
+                <div>
+                    <p class="text3">分销存储阶段</p>
+                    <img src="../img/仓库存储.png" alt="" class="img4">
+                </div>
+                <div>
+                    <p class="text4">销售及使用阶段</p>
+                    <img src="../img/使用.png" alt="" class="img5">
+                </div>
+                <div>
+                    <p class="text5">生命末期阶段</p>
+                    <img src="../img/回收.png" alt="" class="img6">
+                </div>
+
+
+            </div>
+            <div class="right">
+                <div class="content-box" id="box1">
+                    <h3>原材料获取阶段</h3>
+                    <div class="box-content">
+                        <img src="../img/part1.png" alt="茶叶种植" class="box-image" >
+                        <div class="box-text">
+                            <p>包括进入生产阶段的所有原材料的获取和加工。在产品碳足迹评价中应纳入下列过程：</p>
+                            <p>(1)茶叶种植、生产相关过程:</p>
+                            <ul>
+                                <li>①茶叶种植原材料生产的相关过程，包括茶苗、农药（杀虫剂、除草剂等）、肥料、农业设施（农膜等）等原材料的制备及运输过程：</li>
+                                <li>②茶叶种植的相关过程，包括灌溉、施肥、施药、修剪、采摘等；</li>
+                                <li>③茶叶鲜叶运输至茶叶加工工厂的过程。</li>
+                            </ul>
+                            <p>(2)包装材料制造与运输相关过程；</p>
+                            <p>(3)能源的开采生产与输送过程；</p>
+                            <p>(4)水的供应过程；</p>
+                            <p>(5)原材料获取阶段所产生的废弃物的处理相关过程，例如茶叶修剪后枯枝的处置等。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box" id="box2">
+                    <h3>茶叶加工阶段</h3>
+                    <div class="box-content">
+                        <img src="../img/part2.png" alt="茶叶加工" class="box-image" style="width: 8%;">
+                        <div class="box-text">
+                            <p>生产阶段应包括茶叶生产全过程工艺，需在产品碳足迹评价中应纳入下列过程：</p>
+                            <ul>
+                                <li>(1)茶叶加工、包装及存储相关过程，包括加工过程中的能源消耗排放，以及加工中生物质带来的温室气体排放；</li>
+                                <li>(2)生产设备、设施的运行、维护等相关过程；</li>
+                                <li>(3)生产阶段所产生的废弃物处理相关过程。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box" id="box3">
+                    <h3>分销存储阶段</h3>
+                    <div class="box-content">
+                        <img src="../img/part3.png" alt="茶叶存储" class="box-image" style="width: 8%;">
+                        <div class="box-text">
+                            <p>分销阶段包括茶叶产品的运输和储存过程。在产品碳足迹评价中应纳入下列过程：</p>
+                            <ul>
+                                <li>(1)产品从茶叶加工工厂运输到销售点之间的运输过程；</li>
+                                <li>(2)成品仓储及运输过程环境控制等相关过程。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box" id="box4">
+                    <h3>销售及使用阶段</h3>
+                    <div class="box-content">
+                        <img src="../img/part4.png" alt="茶叶消费" class="box-image" style="width: 8%;">
+                        <div class="box-text">
+                            <p>销售及使用阶段包括茶叶产品的销售和使用过程。在产品碳足迹评价中应纳入下列过程：</p>
+                            <ul>
+                                <li>(1)销售相关过程；</li>
+                                <li>(2)由销售点或工厂直接销售到消费者之间的运输、储存及交通相关过程；</li>
+                                <li>(3)消费者冲泡茶叶过程，烧水步骤中的带来的能源消耗排放。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-box" id="box5">
+                    <h3>生命末期阶段</h3>
+                    <div class="box-content">
+                        <img src="../img/part5.png" alt="茶叶废弃" class="box-image" style="width: 8%;">
+                        <div class="box-text">
+                            <p>生命末期阶段包括茶渣等废弃物处理过程。在产品碳足迹评价中应纳入下列过程：</p>
+                            <ul>
+                                <li>(1)茶渣等废弃物处理过程；</li>
+                                <li>(2)包装材料生产阶段及消费阶段产生的废弃物处理过程；</li>
+                                <li>(3)茶叶生产阶段的废弃物处理过程。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section4">
+        <div>
+            <h1>茶叶生命周期系统边界图</h1>
+            <img src="../IMG/LCA.png" alt="">
+            <br>
+            <br>
+            <br><br><br>
+            <h1>茶叶全生命周期碳排放核算流程图</h1>
+            <img src="../IMG/流程图.png" alt="">
+        </div>
+    </section>
+
+    <script>
+        var nav = document.querySelectorAll('.second');
+        for (var i = 0; i < nav.length; i++) {
+            nav[i].addEventListener('mouseenter', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.5s";
+                secondChild.style.display = "block";
+
+                setTimeout(function () {
+                    secondChild.style.opacity = "1";
+                }, 200);
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    img.src = "../img/icon2.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+
+            nav[i].addEventListener('mouseleave', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.3s";
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    secondChild.style.display = "none";
+                    img.src = "../img/icon1.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            updateLayout(); // 手动触发一次更新布局函数
+        });
+
+        window.addEventListener('resize', function () {
+            updateLayout();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth < 768) {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '15%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '0';
+                    ul.style.right = '80px';
+                    ul.style.width = '375%';
+                });
+            } else {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '22%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '40px';
+                    ul.style.right = '-45px';
+                    ul.style.width = '268%';
+                });
+            }
+        }
+    </script>
+
+    <!-- 小车运动 -->
+    <script>
+        // 茶叶图标运动 - 绝对定位版
+        window.addEventListener('DOMContentLoaded', function () {
+            // 获取car(茶叶)元素
+            const car = document.querySelector(".car");
+
+            // 确保元素存在
+            if (!car) {
+                console.error("未找到car元素");
+                return;
+            }
+
+            // 定义固定的路径点坐标（绝对定位）
+            const absolutePoints = [
+                { x: 185, y: 10, rotation: 0 },     // 起点
+                { x: 560, y: 335, rotation: 0 },    // 第一个转弯点
+                { x: 95, y: 595, rotation: 0 },   // 第二个转弯点
+                { x: 600, y: 1150, rotation: 0 },   // 第三个转弯点
+            ];
+
+            // 初始化定位 - 将茶叶放在起始位置
+            function initializePosition() {
+                const startPoint = absolutePoints[0];
+                car.style.position = 'absolute'; // 确保是绝对定位
+                car.style.top = startPoint.y + 'px';
+                car.style.left = startPoint.x + 'px';
+                car.style.transform = `rotate(${startPoint.rotation}deg)`;
+
+                console.log("初始化茶叶位置:", {
+                    carTop: car.style.top,
+                    carLeft: car.style.left
+                });
+            }
+
+            // 执行初始化
+            initializePosition();
+
+            // 基于滚动位置计算茶叶的位置
+            window.addEventListener('scroll', function () {
+                // 设定滚动范围 (例如从 0px 到 600px)
+                const scrollStart = 0;
+                const scrollEnd = 400;
+                const scrollRange = scrollEnd - scrollStart;
+                const scrollY = window.pageYOffset;
+
+                // 如果滚动在指定范围内
+                if (scrollY >= scrollStart && scrollY <= scrollEnd) {
+                    // 计算进度百分比 (0-1)
+                    const progress = (scrollY - scrollStart) / scrollRange;
+
+                    // 确定当前所在的路径段
+                    const pathLength = absolutePoints.length - 1;
+                    const segmentIndex = Math.min(Math.floor(progress * pathLength), pathLength - 1);
+                    const segmentProgress = (progress * pathLength) - segmentIndex;
+
+                    // 获取当前段的起点和终点
+                    const startPoint = absolutePoints[segmentIndex];
+                    const endPoint = absolutePoints[segmentIndex + 1];
+
+                    // 计算当前位置（在两点之间插值）
+                    const currentX = startPoint.x + (endPoint.x - startPoint.x) * segmentProgress;
+                    const currentY = startPoint.y + (endPoint.y - startPoint.y) * segmentProgress;
+                    const currentRotation = startPoint.rotation + (endPoint.rotation - startPoint.rotation) * segmentProgress;
+
+                    // 更新茶叶的位置和旋转
+                    car.style.left = currentX + 'px';
+                    car.style.top = currentY + 'px';
+                    car.style.transform = `rotate(${currentRotation}deg)`;
+
+                    console.log("茶叶位置更新:", {
+                        scrollY: scrollY,
+                        progress: progress,
+                        segment: segmentIndex,
+                        segmentProgress: segmentProgress,
+                        x: currentX,
+                        y: currentY,
+                        rotation: currentRotation
+                    });
+                } else if (scrollY < scrollStart) {
+                    // 如果在起始位置之前，保持在起点
+                    const startPoint = absolutePoints[0];
+                    car.style.left = startPoint.x + 'px';
+                    car.style.top = startPoint.y + 'px';
+                    car.style.transform = `rotate(${startPoint.rotation}deg)`;
+                } else if (scrollY > scrollEnd) {
+                    // 如果在结束位置之后，保持在终点
+                    const lastPoint = absolutePoints[absolutePoints.length - 1];
+                    car.style.left = lastPoint.x + 'px';
+                    car.style.top = lastPoint.y + 'px';
+                    car.style.transform = `rotate(${lastPoint.rotation}deg)`;
+                }
+            });
+
+            // 窗口大小改变时重新计算位置
+            window.addEventListener('resize', function () {
+                // 触发一次滚动事件，以更新茶叶位置
+                window.dispatchEvent(new Event('scroll'));
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 获取所有内容盒子
+            const contentBoxes = document.querySelectorAll('.content-box');
+
+            // 获取左侧茶叶图标的路径点坐标
+            const absolutePoints = [
+                { x: 185, y: 100, scrollY: 0 },      // 起点，对应原材料获取阶段
+                { x: 560, y: 335, scrollY: 100 },   // 第一个转弯点，对应茶叶加工阶段
+                { x: 95, y: 595, scrollY: 200 },    // 第二个转弯点，对应分销存储阶段
+                { x: 400, y: 800, scrollY: 300 },  // 第三个转弯点，对应销售及使用阶段
+                { x: 600, y: 1050, scrollY: 400 }   // 终点，对应生命末期阶段
+            ];
+
+            // 设置路径点对应的滚动位置及对应的盒子ID
+            const scrollTriggerPoints = [
+                { scrollY: absolutePoints[0].scrollY, boxId: 'box1', posY: absolutePoints[0].y },
+                { scrollY: absolutePoints[1].scrollY, boxId: 'box2', posY: absolutePoints[1].y },
+                { scrollY: absolutePoints[2].scrollY, boxId: 'box3', posY: absolutePoints[2].y },
+                { scrollY: absolutePoints[3].scrollY, boxId: 'box4', posY: absolutePoints[3].y },
+                { scrollY: absolutePoints[4].scrollY, boxId: 'box5', posY: absolutePoints[4].y }
+            ];
+
+            // 修改内容盒子的样式，使其定位为绝对定位
+            contentBoxes.forEach(box => {
+                box.style.position = 'absolute';
+                box.style.display = 'none'; // 初始隐藏所有盒子
+            });
+
+            // 监听滚动事件
+            window.addEventListener('scroll', function () {
+                const scrollY = window.pageYOffset;
+
+                // 遍历所有触发点
+                scrollTriggerPoints.forEach(point => {
+                    const box = document.getElementById(point.boxId);
+
+                    // 如果滚动位置超过触发点，显示对应的盒子并定位
+                    if (scrollY >= point.scrollY) {
+
+                        // 设置盒子位置
+                        box.style.right =  50 + 'px';
+                        box.style.top = point.posY + 180 + 'px';
+                        box.style.display = 'block';
+                        box.classList.add('active');
+                    } else {
+                        box.style.display = 'none';
+                        box.classList.remove('active');
+                    }
+                });
+            });
+
+            // 窗口大小改变时重新计算位置
+            window.addEventListener('resize', function () {
+                // 触发一次滚动事件，以更新内容盒子位置
+                window.dispatchEvent(new Event('scroll'));
+            });
+
+            // 初始化时触发一次滚动事件，以正确显示初始状态
+            window.dispatchEvent(new Event('scroll'));
+        });
+    </script>
+
+</body>
+
+</html>
