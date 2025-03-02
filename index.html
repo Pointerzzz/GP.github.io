@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>中国茶产业绿色可持续评估系统</title>
+
+    <!-- font -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/navbar.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <!-- 引入高德地图 JSAPI -->
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=e769a3af2b315d06adf04e42841ec191"></script>
+    <script>
+        window.addEventListener('load', function () {
+            var loader = document.getElementById('loader');
+
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loader">
+        <img src="./img/loader.gif" alt="Loading...">
+    </div>
+
+    <div class="header">
+        <div>
+            <nav class="navbar navbar-expand-md">
+                <a href="" class="navbar-brand"><img src="./IMG/NJAU.png" alt="" class="logo"></a>
+                <a href="" class="navbar-brand"><img src="./IMG/ZJU.png" alt="" class="logo2"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"
+                    title="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="nav-list navbar-nav ms-auto">
+                        <div class="second nav-item">
+                            <img class="ims" src="./img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="index.html">
+                                    <div class="nav-link">首页</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="./img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="./pages/optimize.html">
+                                    <div class="nav-link">目标优化</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="./img/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./pages/carbonFootprint.html">
+                                    <div class="nav-link">碳足迹</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="./img/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="#">
+                                    <div class="nav-link">下载中心</div>
+                                </a>
+                                <ul>
+                                    <li><a href="./pages/download_model.html">
+                                            <div><img src="./img/icon2.png" alt="">模型下载</div>
+                                        </a></li>
+                                    <li><a href="./pages/download_data.html">
+                                            <div><img src="./img/icon2.png" alt="">数据下载</div>
+                                        </a></li>
+                                    <li><a href="./pages/download_png.html">
+                                            <div><img src="./img/icon2.png" alt="">性能图片下载</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <!-- 头图 -->
+    <section class="section0">
+        <img src="./img/head.jpg" alt="">
+    </section>
+
+    <div class="container">
+        <div class="title-section">
+            <h1 class="main-title">中国茶产业绿色可持续发展评估系统</h1>
+        </div>
+        <div class="sub-title">茶叶种植点信息</div>
+        <div id="map" class="map-container"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        var nav = document.querySelectorAll('.second');
+        for (var i = 0; i < nav.length; i++) {
+            nav[i].addEventListener('mouseenter', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.5s";
+                secondChild.style.display = "block";
+
+                setTimeout(function () {
+                    secondChild.style.opacity = "1";
+                }, 200);
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    img.src = "./img/icon2.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+
+            nav[i].addEventListener('mouseleave', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.3s";
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    secondChild.style.display = "none";
+                    img.src = "./img/icon1.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+        }
+
+
+
+
+        window.addEventListener('DOMContentLoaded', function () {
+            updateLayout(); // 手动触发一次更新布局函数
+        });
+
+        window.addEventListener('resize', function () {
+            updateLayout();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth < 768) {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '15%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '0';
+                    ul.style.right = '80px';
+                    ul.style.width = '375%';
+                });
+            } else {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '22%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '40px';
+                    ul.style.right = '-45px';
+                    ul.style.width = '268%';
+                });
+            }
+        }
+    </script>
+    <script>
+        // 创建一个变量来存储当前打开的信息窗体
+        let currentInfoWindow = null;
+
+        // 初始化地图
+        const map = new AMap.Map('map', {
+            zoom: 6,
+            center: [113.08, 28.25],
+            viewMode: '3D'
+        });
+
+        // 添加控件
+        map.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+            map.addControl(new AMap.ToolBar());
+            map.addControl(new AMap.Scale());
+        });
+
+        // 创建自定义标记图标
+        const teaIcon = {
+            image: 'IMG/茶叶.png',
+            size: new AMap.Size(32, 32),
+            imageSize: new AMap.Size(32, 32)
+        }
+
+        // 添加地图点击事件监听器
+        map.on('click', function (e) {
+            // 检查点击是否发生在标记上
+            const isMarkerClick = e.target && e.target.getExtData && e.target.getExtData().isMarker;
+
+            // 如果点击不是发生在标记上且有打开的信息窗体，则关闭它
+            if (!isMarkerClick && currentInfoWindow) {
+                currentInfoWindow.close();
+                currentInfoWindow = null;
+            }
+        });
+
+        // 数据分类定义
+        const dataCategories = {
+            "地理位置信息": {
+                icon: "🌍",
+                fields: {
+                    "经度": "longitude",
+                    "纬度": "latitude",
+                    "海拔": ["Altitude(m)", "m"]
+                }
+            },
+            "气象信息": {
+                icon: "🌤",
+                fields: {
+                    "年降水量": ["Precipitation(mm)", "mm"],
+                    "平均温度": ["Average Temperature (°C)", "°C"]
+                }
+            },
+            "土壤信息": {
+                icon: "🌱",
+                fields: {
+                    "pH值": "pH",
+                    "全氮含量": ["TN(g/kg-1)", "g/kg"],
+                    "有效磷": ["AP (mg/kg-1)", "mg/kg"],
+                    "速效钾": ["AK(mg/kg-1)", "mg/kg"],
+                    "有机碳": ["SOC(%)", "%"]
+                }
+            },
+            "品种信息": {
+                icon: "🍃",
+                fields: {
+                    "大叶种": "Large-leaved variety",
+                    "中叶种": "Medium-leaved variety",
+                    "小叶种": "small-leaved variety",
+                    "种植年限": "Years of planting"
+                }
+            },
+            "施肥信息": {
+                icon: "💊",
+                fields: {
+                    "化肥用量": ["N quantity(kg/y/hm2)", "kg/y/hm²"],
+                    "磷肥用量": ["P2O5 quantity(kg/y/hm2)", "kg/y/hm²"],
+                    "钾肥用量": ["K2O quantity(kg/y/hm2)", "kg/y/hm²"],
+                    "有机肥用量": ["organic fertilizer quantity(kg`y/hm2)", "kg/y/hm²"]
+                }
+            },
+            "产量信息": {
+                icon: "📊",
+                fields: {
+                    "鲜叶产量": ["Fresh Shoot Yield(kg/667m2)_MEAN", "kg/667m²"]
+                }
+            }
+        };
+
+        // 生成信息内容的函数
+        function generateCategoryContent(data, category) {
+            const fields = dataCategories[category].fields;
+            let content = "";
+
+            for (const [label, field] of Object.entries(fields)) {
+                let value, unit = '';
+                if (Array.isArray(field)) {
+                    value = data[field[0]];
+                    unit = field[1];
+                } else {
+                    value = data[field];
+                }
+
+                if (value !== undefined && value !== '') {
+                    content += `<p>${label}: ${value}${unit}</p>`;
+                }
+            }
+
+            return content;
+        }
+
+        function createInfoWindowContent(point) {
+            let content = `
+<div style="
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 350px;
+    font-family: 'Microsoft YaHei', sans-serif;
+">
+    <h3 style="
+        margin: 0 0 20px 0;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #2c9678;
+        color: #2c9678;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    ">
+        <img src="IMG/茶叶.png" style="width: 24px; height: 24px; margin-right: 8px;">
+        茶叶种植点详细信息
+    </h3>
+`;
+
+            // 创建分类折叠面板
+            for (const [category, categoryInfo] of Object.entries(dataCategories)) {
+                const categoryId = `category-${category}-${point.longitude}-${point.latitude}`.replace(/\s+/g, '-');
+
+                content += `
+    <div style="margin-bottom: 12px;">
+        <div onclick="toggleCategory('${categoryId}')" 
+             style="
+                cursor: pointer;
+                padding: 10px 15px;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: background-color 0.3s;
+                border: 1px solid #e9ecef;
+                &:hover {
+                    background-color: #e9ecef;
+                }
+             ">
+            <span style="
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                color: #495057;
+            ">
+                <span style="margin-right: 8px; font-size: 16px;">${categoryInfo.icon}</span>
+                ${category}
+            </span>
+            <span id="arrow-${categoryId}" 
+                  style="
+                    transform: rotate(-90deg);
+                    transition: transform 0.3s;
+                    color: #6c757d;
+                    font-size: 12px;
+                  ">▼</span>
+        </div>
+        <div id="${categoryId}" 
+             style="
+                display: none;
+                padding: 15px;
+                background-color: #fff;
+                border: 1px solid #e9ecef;
+                border-top: none;
+                margin-top: -1px;
+                border-radius: 0 0 8px 8px;
+             ">
+            ${generateCategoryContent(point, category)}
+        </div>
+    </div>
+`;
+            }
+
+            content += `</div>`;
+            return content;
+        }
+
+        // 重写生成分类内容的函数以添加更好的样式
+        function generateCategoryContent(data, category) {
+            const fields = dataCategories[category].fields;
+            let content = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px;">';
+
+            for (const [label, field] of Object.entries(fields)) {
+                let value, unit = '';
+                if (Array.isArray(field)) {
+                    value = data[field[0]];
+                    unit = field[1];
+                } else {
+                    value = data[field];
+                }
+
+                if (value !== undefined && value !== '') {
+                    content += `
+        <div style="color: #6c757d; text-align: right; padding-right: 10px;">${label}:</div>
+        <div style="color: #212529; font-weight: 500;">${value}${unit}</div>
+    `;
+                }
+            }
+
+            content += '</div>';
+            return content;
+        }
+
+        // 更新切换函数以添加平滑动画
+        window.toggleCategory = function (categoryId) {
+            const element = document.getElementById(categoryId);
+            const arrow = document.getElementById(`arrow-${categoryId}`);
+            const parentDiv = element.previousElementSibling;
+
+            if (element) {
+                const isVisible = element.style.display !== 'none';
+
+                // 切换显示状态
+                element.style.display = isVisible ? 'none' : 'block';
+
+                // 更新箭头旋转
+                if (arrow) {
+                    arrow.style.transform = isVisible ? 'rotate(-90deg)' : 'rotate(0deg)';
+                }
+
+                // 更新父div的边框圆角
+                if (isVisible) {
+                    parentDiv.style.borderRadius = '8px';
+                } else {
+                    parentDiv.style.borderRadius = '8px 8px 0 0';
+                }
+            }
+        };
+
+        // 创建标记时的修改
+        Papa.parse('database_yield.csv', {
+            download: true,
+            header: true,
+            encoding: "UTF-8",
+            complete: function (results) {
+                results.data.forEach(point => {
+                    if (point.longitude && point.latitude) {
+                        const longitude = parseFloat(point.longitude);
+                        const latitude = parseFloat(point.latitude);
+
+                        if (!isNaN(longitude) && !isNaN(latitude)) {
+                            const marker = new AMap.Marker({
+                                position: [longitude, latitude],
+                                title: '茶叶种植点',
+                                icon: new AMap.Icon(teaIcon),
+                                offset: new AMap.Pixel(-16, -16),
+                                extData: { isMarker: true }  // 添加标记标识
+                            });
+
+                            const infoWindow = new AMap.InfoWindow({
+                                content: createInfoWindowContent(point),
+                                offset: new AMap.Pixel(0, -30),
+                                isCustom: true
+                            });
+
+                            marker.on('click', () => {
+                                // 如果已经有打开的信息窗体，先关闭它
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                }
+                                // 打开新的信息窗体并更新引用
+                                infoWindow.open(map, marker.getPosition());
+                                currentInfoWindow = infoWindow;
+                            });
+
+                            marker.setMap(map);
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("CSV 加载错误:", error.message);
+            }
+        });
+    </script>
+</body>
+
+</html>
