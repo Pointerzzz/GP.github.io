@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>模型下载</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Indie+Flower&family=Kalam&family=Ma+Shan+Zheng&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/optimize.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/download_data.css">
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=e769a3af2b315d06adf04e42841ec191"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            var loader = document.getElementById('loader');
+
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+    <style>
+        .tab.yield {
+            left: -30px;
+            background-color: #A3E6B8; /* 产量标签使用绿色 */
+            z-index: 2;
+        }
+        .tab.n2o {
+            left: 0px; /* 初始状态缩进 */
+            background-color: #FFC0CB; /* N2O标签使用粉色 */
+            z-index: 1;
+            transition: left 0.5s ease;
+        }
+        .tab.yield:hover {
+            left: 0; /* 鼠标悬停时完全展开 */
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <img src="../img/loader.gif" alt="Loading...">
+    </div>
+
+    <div class="header">
+        <div>
+            <nav class="navbar navbar-expand-md">
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="nav-list navbar-nav ms-auto">
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="../index.html">
+                                    <div class="nav-link">首页</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">目标优化</div>
+                                </a>
+                                <ul>
+                                    <li><a href="optimize.html">
+                                            <div><img src="../img/icon2.png" alt="">产量最大化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../img/icon2.png" alt="">施氮量Minimize</div>
+                                        </a></li>
+                                    <li><a href="optimize_N2O.html">
+                                            <div><img src="../img/icon2.png" alt="">N2O Minimize</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="carbonFootprint.html">
+                                    <div class="nav-link">碳足迹</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">下载中心</div>
+                                </a>
+                                <ul>
+                                    <li><a href="download_model.html">
+                                            <div><img src="../img/icon2.png" alt="">模型下载</div>
+                                        </a></li>
+                                    <li><a href="download_data.html">
+                                            <div><img src="../img/icon2.png" alt="">数据下载</div>
+                                        </a></li>
+                                    <li><a href="download_png.html">
+                                            <div><img src="../img/icon2.png" alt="">性能图片下载</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="data-tabs">
+        <a href="download_model.html" class="tab yield active">产量</a>
+        <a href="download_model_2.html" class="tab n2o">N2O</a>
+    </div>
+    <div class="notebook">
+        <h1 class="title">N2O模型下载</h1>
+        <div class="sticky-notes">
+            <a href="../data/metrics/tea_N2O_GradientBoosting_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>GradientBoosting</h3>
+                <p>点击下载</p>
+            </a>
+            <a href="../data/metrics/tea_N2O_KNeighbors_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>K近邻</h3>
+                <p>点击下载</p>
+            </a>
+            <a href="../data/metrics/tea_N2O_Lasso_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>Lasso</h3>
+                <p>点击下载</p>
+            </a>
+            <a href="../data/metrics/tea_N2O_RandomForest_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>随机森林</h3>
+                <p>点击下载</p>
+            </a>
+            <a href="../data/metrics/tea_N2O_XGBoost_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>XGBoost</h3>
+                <p>点击下载</p>
+            </a>
+            <a href="../data/metrics/tea_N2O_SVM_model_results.pkl" class="sticky-note" style="font-size: x-large;">
+                <h3>SVM</h3>
+                <p>点击下载</p>
+            </a>
+        </div>
+    </div>
+
+
+
+    <script>
+        var nav = document.querySelectorAll('.second');
+        for (var i = 0; i < nav.length; i++) {
+            nav[i].addEventListener('mouseenter', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.5s";
+                secondChild.style.display = "block";
+
+                setTimeout(function () {
+                    secondChild.style.opacity = "1";
+                }, 200);
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    img.src = "../img/icon2.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+
+            nav[i].addEventListener('mouseleave', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.3s";
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    secondChild.style.display = "none";
+                    img.src = "../img/icon1.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            updateLayout(); // 手动触发一次更新布局函数
+        });
+
+        window.addEventListener('resize', function () {
+            updateLayout();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth < 768) {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '15%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '0';
+                    ul.style.right = '80px';
+                    ul.style.width = '375%';
+                });
+            } else {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '22%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '40px';
+                    ul.style.right = '-45px';
+                    ul.style.width = '268%';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

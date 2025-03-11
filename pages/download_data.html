@@ -26,10 +26,26 @@
             }, 2000);
         });
     </script>
+    <style>
+        .tab.yield {
+            left: 0;
+            background-color: #A3E6B8; /* 产量标签使用绿色 */
+            z-index: 2;
+        }
+        .tab.n2o {
+            left: -30px; /* 初始状态缩进 */
+            background-color: #FFC0CB; /* N2O标签使用粉色 */
+            z-index: 1;
+            transition: left 0.5s ease;
+        }
+        .tab.n2o:hover {
+            left: 0; /* 鼠标悬停时完全展开 */
+        }
+    </style>
 </head>
 <body>
     <div id="loader">
-        <img src="../IMG/loader.gif" alt="Loading...">
+        <img src="../img/loader.gif" alt="Loading...">
     </div>
 
     <div class="header">
@@ -43,7 +59,7 @@
                 <div class="collapse navbar-collapse" id="navmenu">
                     <ul class="nav-list navbar-nav ms-auto">
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="../index.html">
                                     <div class="nav-link">首页</div>
                                 </a>
@@ -51,15 +67,25 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
-                            <li class="cool-link first"><a href="optimize.html">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
-                                <ul></ul>
+                                <ul>
+                                    <li><a href="optimize.html">
+                                            <div><img src="../img/icon2.png" alt="">产量最大化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../img/icon2.png" alt="">施氮量Minimize</div>
+                                        </a></li>
+                                    <li><a href="optimize_N2O.html">
+                                            <div><img src="../img/icon2.png" alt="">N2O Minimize</div>
+                                        </a></li>
+                                </ul>
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="carbonFootprint.html">
                                     <div class="nav-link">碳足迹</div>
                                 </a>
@@ -67,19 +93,19 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">下载中心</div>
                                 </a>
                                 <ul>
                                     <li><a href="download_model.html">
-                                            <div><img src="../IMG/icon2.png" alt="">模型下载</div>
+                                            <div><img src="../img/icon2.png" alt="">模型下载</div>
                                         </a></li>
                                     <li><a href="download_data.html">
-                                            <div><img src="../IMG/icon2.png" alt="">数据下载</div>
+                                            <div><img src="../img/icon2.png" alt="">数据下载</div>
                                         </a></li>
                                     <li><a href="download_png.html">
-                                            <div><img src="../IMG/icon2.png" alt="">性能图片下载</div>
+                                            <div><img src="../img/icon2.png" alt="">性能图片下载</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -90,15 +116,21 @@
         </div>
     </div>
 
+    <!-- 添加左侧标签 -->
+    <div class="data-tabs">
+        <a href="download_data.html" class="tab yield active">产量</a>
+        <a href="download_data_2.html" class="tab n2o">N2O</a>
+    </div>
+
     <div class="notebook">
-        <h1 class="title">数据集下载</h1>
+        <h1 class="title">产量数据集下载</h1>
         <div class="sticky-notes">
-            <a href="../database_yield.csv" class="sticky-note" style="height:288px;width:535px;font-size: xx-large;transform: rotate(-30deg);top:150px;left: 50px;">
+            <a href="../database_yield.csv" class="sticky-note" style="height:288px;width:535px;font-size: xx-large;transform: rotate(-3deg);top:150px;left: 50px;">
                 <h3>原始数据集</h3>
                 <p>database_yield.csv</p>
                 <p>点击下载</p>
             </a>
-            <a href="../optimized_tea.csv" class="sticky-note" style="height:220px;width:450px;font-size: xx-large;transform: rotate(25deg);top:150px;left: 650px;">
+            <a href="../figures/yield/optimized_tea_yield.csv" class="sticky-note" style="height:220px;width:450px;font-size: xx-large;transform: rotate(2deg);top:150px;left: 650px;">
                 <h3>优化后数据集</h3>
                 <p>optimized_tea.csv</p>
                 <p>点击下载</p>
@@ -111,9 +143,8 @@
         </div>
     </div>
 
-
-
     <script>
+        // 导航菜单交互
         var nav = document.querySelectorAll('.second');
         for (var i = 0; i < nav.length; i++) {
             nav[i].addEventListener('mouseenter', function () {
@@ -132,7 +163,7 @@
                 img.classList.add("fade-out");
 
                 img.addEventListener("transitionend", function () {
-                    img.src = "../IMG/icon2.png";
+                    img.src = "../img/icon2.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
@@ -149,14 +180,26 @@
 
                 img.addEventListener("transitionend", function () {
                     secondChild.style.display = "none";
-                    img.src = "../IMG/icon1.png";
+                    img.src = "../img/icon1.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
         }
 
+        // 响应式布局调整
         window.addEventListener('DOMContentLoaded', function () {
-            updateLayout(); // 手动触发一次更新布局函数
+            updateLayout(); // 页面加载时初始化布局
+            
+            // 标记当前活动标签
+            var currentPath = window.location.pathname;
+            var tabs = document.querySelectorAll('.tab');
+            tabs.forEach(function(tab) {
+                if(tab.getAttribute('href') && currentPath.includes(tab.getAttribute('href'))) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
         });
 
         window.addEventListener('resize', function () {
@@ -176,6 +219,9 @@
                     ul.style.right = '80px';
                     ul.style.width = '375%';
                 });
+                
+                // 小屏幕时调整标签位置
+                document.querySelector('.data-tabs').style.top = '120px';
             } else {
                 var img = document.getElementsByClassName('ims');
                 for (var i = 0; i < img.length; i++) {
@@ -188,6 +234,9 @@
                     ul.style.right = '-45px';
                     ul.style.width = '268%';
                 });
+                
+                // 大屏幕时调整标签位置
+                document.querySelector('.data-tabs').style.top = '150px';
             }
         }
     </script>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>茶叶N2O排放优化分析</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
+    <link rel="stylesheet" type="text/css" href="../assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/optimize.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=e769a3af2b315d06adf04e42841ec191"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+        window.addEventListener('load', function () {
+            var loader = document.getElementById('loader');
+
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loader">
+        <img src="../img/loader.gif" alt="Loading...">
+    </div>
+
+    <div class="header">
+        <div>
+            <nav class="navbar navbar-expand-md">
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="nav-list navbar-nav ms-auto">
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="../index.html">
+                                    <div class="nav-link">首页</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">目标优化</div>
+                                </a>
+                                <ul>
+                                    <li><a href="optimize.html">
+                                            <div><img src="../img/icon2.png" alt="">产量最大化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../img/icon2.png" alt="">施氮量Minimize</div>
+                                        </a></li>
+                                    <li><a href="optimize_N2O.html">
+                                            <div><img src="../img/icon2.png" alt="">N2O Minimize</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="carbonFootprint.html">
+                                    <div class="nav-link">碳足迹</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">下载中心</div>
+                                </a>
+                                <ul>
+                                    <li><a href="download_model.html">
+                                            <div><img src="../img/icon2.png" alt="">模型下载</div>
+                                        </a></li>
+                                    <li><a href="download_data.html">
+                                            <div><img src="../img/icon2.png" alt="">数据下载</div>
+                                        </a></li>
+                                    <li><a href="download_png.html">
+                                            <div><img src="../img/icon2.png" alt="">性能图片下载</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="title-section">
+            <h1 class="main-title">茶叶N2O排放优化分析</h1>
+        </div>
+
+        <div class="sub-title">优化点位分布</div>
+        <div id="map" class="map-container"></div>
+
+        <div class="sub-title">优化效果分析</div>
+        <div class="visualization-container">
+            <div id="barChart" class="chart-container"></div>
+            <div id="scatterChart" class="chart-container"></div>
+        </div>
+        <img src="../figures/N2O/overall_improvement.png" alt="" style="width: 100%;">
+    </div>
+
+    <div id="comparisonModal" class="modal-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div class="modal-content"
+            style="position: fixed; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); max-width: 600px; max-height: 80vh; overflow-y: auto; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <span class="modal-close"
+                style="position: absolute; right: 10px; top: 10px; font-size: 24px; cursor: pointer; color: #666;">&times;</span>
+            <div class="modal-table-container">
+                <table class="comparison-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 10px; border: 1px solid #ddd; background: #f5f5f5;">特征</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; background: #f5f5f5;">优化前</th>
+                            <th style="padding: 10px; border: 1px solid #ddd; background: #f5f5f5;">优化后</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        // 创建一个变量来存储当前打开的信息窗体
+        let currentInfoWindow = null;
+        let originalData = [];
+        let optimizedData = [];
+
+        // 初始化地图
+        const map = new AMap.Map('map', {
+            zoom: 6,
+            center: [113.08, 28.25],
+            viewMode: '3D'
+        });
+
+        // 添加控件
+        map.plugin(['AMap.ToolBar', 'AMap.Scale'], function () {
+            map.addControl(new AMap.ToolBar());
+            map.addControl(new AMap.Scale());
+        });
+
+        // 创建自定义标记图标
+        const teaIcon = {
+            image: '../IMG/茶叶.png',
+            size: new AMap.Size(32, 32),
+            imageSize: new AMap.Size(32, 32)
+        }
+
+        // 添加地图点击事件监听器
+        map.on('click', function (e) {
+            // 检查点击是否发生在标记上
+            const isMarkerClick = e.target && e.target.getExtData && e.target.getExtData().isMarker;
+
+            // 如果点击不是发生在标记上且有打开的信息窗体，则关闭它
+            if (!isMarkerClick && currentInfoWindow) {
+                currentInfoWindow.close();
+                currentInfoWindow = null;
+            }
+        });
+
+        // 创建信息窗体内容
+        function createInfoWindowContent(point, originalPoint) {
+            const contentElement = document.createElement('div');
+            contentElement.setAttribute('data-point', JSON.stringify(point));
+            contentElement.setAttribute('data-original-point', JSON.stringify(originalPoint));
+
+            contentElement.innerHTML = `
+        <div style="
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 350px;
+            font-family: 'Microsoft YaHei', sans-serif;
+        ">
+            <h3 style="
+                margin: 0 0 20px 0;
+                padding-bottom: 12px;
+                border-bottom: 2px solid #2c9678;
+                color: #2c9678;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+            ">
+                <img src="../IMG/茶叶.png" style="width: 24px; height: 24px; margin-right: 8px;">
+                优化点位信息
+            </h3>
+            <div style="
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 10px;
+                color: #495057;
+                margin-bottom: 20px;
+            ">
+                <div style="text-align: right; color: #6c757d;">原始N2O排放:</div>
+                <div style="font-weight: 500;">${point.original_n2o} kg N2O-N/hm²</div>
+                
+                <div style="text-align: right; color: #6c757d;">优化N2O排放:</div>
+                <div style="font-weight: 500;">${point.optimized_n2o} kg N2O-N/hm²</div>
+                
+                <div style="text-align: right; color: #6c757d;">减排量:</div>
+                <div style="font-weight: 500;">${point.reduction} kg N2O-N/hm²</div>
+                
+                <div style="text-align: right; color: #6c757d;">减排百分比:</div>
+                <div style="font-weight: 500;">${point.reduction_percent}%</div>
+            </div>
+            
+            <button onclick="toggleDetailInfo(this)" 
+                style="
+                    background-color: #2c9678;
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    width: 100%;
+                    font-size: 14px;
+                    transition: background-color 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='#247a61'"
+                onmouseout="this.style.backgroundColor='#2c9678'"
+            >
+                查看详细信息
+            </button>
+        </div>
+    `;
+
+            return contentElement;
+        }
+
+        // 加载原始数据
+        Papa.parse('../tea_N2O_test.csv', {
+            download: true,
+            header: true,
+            encoding: "UTF-8",
+            complete: function (results) {
+                originalData = results.data;
+                // 加载优化后的数据
+                loadOptimizedData();
+            },
+            error: function (error) {
+                console.error("原始数据CSV加载错误:", error.message);
+            }
+        });
+
+        // 加载优化后的数据及创建图表
+        function loadOptimizedData() {
+            Papa.parse('../figures/N2O/optimized_tea_n2o_results.csv', {
+                download: true,
+                header: true,
+                encoding: "UTF-8",
+                complete: function (results) {
+                    optimizedData = results.data;
+                    // 初始化地图标记
+                    initializeMapMarkers();
+                    // 创建图表
+                    createCharts(optimizedData);
+                },
+                error: function (error) {
+                    console.error("优化数据CSV加载错误:", error.message);
+                }
+            });
+        }
+
+        // 初始化地图标记
+        function initializeMapMarkers() {
+            optimizedData.forEach((point, index) => {
+                if (point.longitude && point.latitude) {
+                    const longitude = parseFloat(point.longitude);
+                    const latitude = parseFloat(point.latitude);
+
+                    if (!isNaN(longitude) && !isNaN(latitude)) {
+                        const marker = new AMap.Marker({
+                            position: [longitude, latitude],
+                            title: '茶叶种植点',
+                            icon: new AMap.Icon(teaIcon),
+                            offset: new AMap.Pixel(-16, -16),
+                            extData: { isMarker: true }
+                        });
+
+                        const infoWindow = new AMap.InfoWindow({
+                            content: createInfoWindowContent(point, originalData[index]),
+                            offset: new AMap.Pixel(0, -30),
+                            isCustom: true
+                        });
+
+                        marker.on('click', () => {
+                            if (currentInfoWindow) {
+                                currentInfoWindow.close();
+                            }
+                            infoWindow.open(map, marker.getPosition());
+                            currentInfoWindow = infoWindow;
+                        });
+
+                        marker.setMap(map);
+                    }
+                }
+            });
+        }
+
+        // 创建图表
+        function createCharts(data) {
+            // 创建条形图
+            const barChart = echarts.init(document.getElementById('barChart'));
+            const barOption = {
+                title: {
+                    text: 'N2O排放优化前后对比',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['优化前', '优化后'],
+                    top: 30
+                },
+                xAxis: {
+                    type: 'category',
+                    data: data.map((_, index) => `点位${index + 1}`)
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'N2O排放 (kg N2O-N/hm²)'
+                },
+                series: [
+                    {
+                        name: '优化前',
+                        type: 'bar',
+                        data: data.map(item => parseFloat(item.original_n2o)),
+                        itemStyle: { color: '#ff7272' }
+                    },
+                    {
+                        name: '优化后',
+                        type: 'bar',
+                        data: data.map(item => parseFloat(item.optimized_n2o)),
+                        itemStyle: { color: '#5470c6' }
+                    }
+                ]
+            };
+            barChart.setOption(barOption);
+
+            // 创建散点图
+            const scatterChart = echarts.init(document.getElementById('scatterChart'));
+            const scatterOption = {
+                title: {
+                    text: 'N2O减排效果分析',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function (params) {
+                        return `原始排放: ${params.value[0].toFixed(2)}<br/>优化排放: ${params.value[1].toFixed(2)}`;
+                    }
+                },
+                xAxis: {
+                    type: 'value',
+                    name: '原始N2O排放 (kg N2O-N/hm²)'
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '优化N2O排放 (kg N2O-N/hm²)'
+                },
+                series: [{
+                    type: 'scatter',
+                    data: data.map(item => [
+                        parseFloat(item.original_n2o),
+                        parseFloat(item.optimized_n2o)
+                    ]),
+                    itemStyle: {
+                        color: '#5470c6'
+                    }
+                },
+                {
+                    type: 'line',
+                    showSymbol: false,
+                    data: [[0, 0], [50, 50]],
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#999'
+                    }
+                }]
+            };
+            scatterChart.setOption(scatterOption);
+
+            // 添加窗口大小改变时的自适应
+            window.addEventListener('resize', function () {
+                barChart.resize();
+                scatterChart.resize();
+            });
+        }
+    </script>
+    <script>
+        // 修改显示模态框的函数
+        function toggleDetailInfo(button) {
+            const modal = document.getElementById('comparisonModal');
+            const tableBody = document.getElementById('comparisonTableBody');
+
+            // 获取数据点信息
+            const infoContent = button.closest('div[data-point]');
+            const pointData = JSON.parse(infoContent.getAttribute('data-point'));
+            const originalPointData = JSON.parse(infoContent.getAttribute('data-original-point'));
+
+            // 清空表格内容
+            tableBody.innerHTML = '';
+
+            // 定义要显示的特征
+            const features = [
+                { key: 'longitude', label: '经度', unit: '°' },
+                { key: 'latitude', label: '纬度', unit: '°' },
+                { key: 'Altitude(m)', label: '海拔', unit: 'm' },
+                { key: 'Precipitation(mm)', label: '降水量', unit: 'mm' },
+                { key: 'Average Temperature (°C)', label: '平均温度', unit: '°C' },
+                { key: 'Lowest Temperature (°C)', label: '最低温度', unit: '°C' },
+                { key: 'Highest Temperature (°C)', label: '最高温度', unit: '°C' },
+                { key: 'pH', label: 'pH值', unit: '' },
+                { key: 'TN(g/kg-1)', label: '全氮', unit: 'g/kg' },
+                { key: 'SOC(%)', label: '有机碳', unit: '%' },
+                { key: 'depth(cm)', label: '深度', unit: 'cm' },
+                { key: 'mineral_N quantity(kg/y/hm2)', label: '矿物氮用量', unit: 'kg/y/hm2' },
+                { key: 'organic_N quantity(kg/y/hm2)', label: '有机氮用量', unit: 'kg/y/hm2' }
+            ];
+
+            // 生成表格行
+            features.forEach(feature => {
+                if (pointData[feature.key] !== undefined && originalPointData[feature.key] !== undefined) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                    <td>${feature.label}</td>
+                    <td>${originalPointData[feature.key]}${feature.unit}</td>
+                    <td>${pointData[feature.key]}${feature.unit}</td>
+                `;
+                    tableBody.appendChild(row);
+                }
+            });
+
+            // 显示模态框
+            modal.style.display = 'flex';
+        }
+
+        // 关闭模态框的函数
+        function closeModal() {
+            const modal = document.getElementById('comparisonModal');
+            modal.style.display = 'none';
+        }
+
+        // 点击关闭按钮关闭模态框
+        document.querySelector('.modal-close').addEventListener('click', closeModal);
+
+        // 点击模态框外部关闭
+        window.onclick = function (event) {
+            const modal = document.getElementById('comparisonModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // 防止表格容器的点击事件冒泡到模态框
+        document.querySelector('.modal-content').addEventListener('click', function (event) {
+            event.stopPropagation();
+        });
+    </script>
+    <script>
+        var nav = document.querySelectorAll('.second');
+        for (var i = 0; i < nav.length; i++) {
+            nav[i].addEventListener('mouseenter', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.5s";
+                secondChild.style.display = "block";
+
+                setTimeout(function () {
+                    secondChild.style.opacity = "1";
+                }, 200);
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    img.src = "../img/icon2.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+
+            nav[i].addEventListener('mouseleave', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.3s";
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    secondChild.style.display = "none";
+                    img.src = "../img/icon1.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+        }
+
+
+
+
+        window.addEventListener('DOMContentLoaded', function () {
+            updateLayout(); // 手动触发一次更新布局函数
+        });
+
+        window.addEventListener('resize', function () {
+            updateLayout();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth < 768) {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '15%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '0';
+                    ul.style.right = '80px';
+                    ul.style.width = '375%';
+                });
+            } else {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '22%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '40px';
+                    ul.style.right = '-45px';
+                    ul.style.width = '268%';
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

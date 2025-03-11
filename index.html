@@ -29,11 +29,42 @@
             }, 2000);
         });
     </script>
+    <style>
+        /* 图例样式 */
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            z-index: 100;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .legend-item img {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .legend-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c9678;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+    </style>
 </head>
 
 <body>
     <div id="loader">
-        <img src="./IMG/loader.gif" alt="Loading...">
+        <img src="./img/loader.gif" alt="Loading...">
     </div>
 
     <div class="header">
@@ -48,7 +79,7 @@
                 <div class="collapse navbar-collapse" id="navmenu">
                     <ul class="nav-list navbar-nav ms-auto">
                         <div class="second nav-item">
-                            <img class="ims" src="./IMG/icon1.png" alt="">
+                            <img class="ims" src="./img/icon1.png" alt="">
                             <li class="cool-link first"><a href="index.html">
                                     <div class="nav-link">首页</div>
                                 </a>
@@ -57,16 +88,25 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="./IMG/icon1.png" alt="">
-                            <li class="cool-link first"><a href="./pages/optimize.html">
+                            <img class="ims" src="./img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
                                 <ul>
+                                    <li><a href="./pages/optimize.html">
+                                        <div><img src="./img/icon2.png" alt="">产量最大化</div>
+                                    </a></li>
+                                <li><a href="./pages/optimize_N.html">
+                                        <div><img src="./img/icon2.png" alt="">施氮量Minimize</div>
+                                    </a></li>
+                                <li><a href="./pages/optimize_N2O.html">
+                                        <div><img src="./img/icon2.png" alt="">N2O Minimize</div>
+                                    </a></li>
                                 </ul>
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="./IMG/icon1.png" alt="">
+                            <img class="ims" src="./img/icon1.png" alt="">
                             <li class=" cool-link first"><a href="./pages/carbonFootprint.html">
                                     <div class="nav-link">碳足迹</div>
                                 </a>
@@ -75,19 +115,19 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="./IMG/icon1.png" alt="">
+                            <img class="ims" src="./img/icon1.png" alt="">
                             <li class=" cool-link first"><a href="#">
                                     <div class="nav-link">下载中心</div>
                                 </a>
                                 <ul>
                                     <li><a href="./pages/download_model.html">
-                                            <div><img src="./IMG/icon2.png" alt="">模型下载</div>
+                                            <div><img src="./img/icon2.png" alt="">模型下载</div>
                                         </a></li>
                                     <li><a href="./pages/download_data.html">
-                                            <div><img src="./IMG/icon2.png" alt="">数据下载</div>
+                                            <div><img src="./img/icon2.png" alt="">数据下载</div>
                                         </a></li>
                                     <li><a href="./pages/download_png.html">
-                                            <div><img src="./IMG/icon2.png" alt="">性能图片下载</div>
+                                            <div><img src="./img/icon2.png" alt="">性能图片下载</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -100,7 +140,7 @@
 
     <!-- 头图 -->
     <section class="section0">
-        <img src="./IMG/head.jpg" alt="">
+        <img src="./img/head.jpg" alt="">
     </section>
 
     <div class="container">
@@ -108,7 +148,20 @@
             <h1 class="main-title">中国茶产业绿色可持续发展评估系统</h1>
         </div>
         <div class="sub-title">茶叶种植点信息</div>
-        <div id="map" class="map-container"></div>
+        <div id="map" class="map-container">
+            <!-- 图例 -->
+            <div class="map-legend">
+                <div class="legend-title">地图图例</div>
+                <div class="legend-item">
+                    <img src="IMG/茶叶.png" alt="产量数据">
+                    <span>产量数据点</span>
+                </div>
+                <div class="legend-item">
+                    <img src="IMG/茶叶2.png" alt="N2O数据">
+                    <span>N2O排放数据点</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -131,7 +184,7 @@
                 img.classList.add("fade-out");
 
                 img.addEventListener("transitionend", function () {
-                    img.src = "./IMG/icon2.png";
+                    img.src = "./img/icon2.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
@@ -148,14 +201,11 @@
 
                 img.addEventListener("transitionend", function () {
                     secondChild.style.display = "none";
-                    img.src = "./IMG/icon1.png";
+                    img.src = "./img/icon1.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
         }
-
-
-
 
         window.addEventListener('DOMContentLoaded', function () {
             updateLayout(); // 手动触发一次更新布局函数
@@ -210,9 +260,16 @@
             map.addControl(new AMap.Scale());
         });
 
-        // 创建自定义标记图标
+        // 创建产量数据的自定义标记图标
         const teaIcon = {
             image: 'IMG/茶叶.png',
+            size: new AMap.Size(32, 32),
+            imageSize: new AMap.Size(32, 32)
+        }
+
+        // 创建N2O数据的自定义标记图标
+        const teaN2OIcon = {
+            image: 'IMG/茶叶2.png',
             size: new AMap.Size(32, 32),
             imageSize: new AMap.Size(32, 32)
         }
@@ -229,8 +286,8 @@
             }
         });
 
-        // 数据分类定义
-        const dataCategories = {
+        // 产量数据的分类定义
+        const yieldDataCategories = {
             "地理位置信息": {
                 icon: "🌍",
                 fields: {
@@ -282,9 +339,52 @@
             }
         };
 
-        // 生成信息内容的函数
-        function generateCategoryContent(data, category) {
-            const fields = dataCategories[category].fields;
+        // N2O数据的分类定义
+        const n2oDataCategories = {
+            "地理位置信息": {
+                icon: "🌍",
+                fields: {
+                    "经度": "longitude",
+                    "纬度": "latitude",
+                    "海拔": ["Altitude(m)", "m"]
+                }
+            },
+            "气象信息": {
+                icon: "🌤",
+                fields: {
+                    "年降水量": ["Precipitation(mm)", "mm"],
+                    "平均温度": ["Average Temperature (C)", "°C"],
+                    "最低温度": ["Lowest Temperature (C)", "°C"],
+                    "最高温度": ["Highest Temperature (C)", "°C"]
+                }
+            },
+            "土壤信息": {
+                icon: "🌱",
+                fields: {
+                    "pH值": "pH",
+                    "全氮含量": ["TN(g/kg-1)", "g/kg"],
+                    "有机碳": ["SOC(%)", "%"],
+                    "土壤深度": ["depth(cm)", "cm"]
+                }
+            },
+            "施肥信息": {
+                icon: "💊",
+                fields: {
+                    "矿质氮肥用量": ["mineral_N quantity(kg/y/hm2)", "kg/y/hm²"],
+                    "有机氮肥用量": ["organic_N quantity(kg/y/hm2)", "kg/y/hm²"]
+                }
+            },
+            "氧化亚氮排放": {
+                icon: "💨",
+                fields: {
+                    "N2O排放量": ["N2O emission", "kg N2O-N/hm²/年"]
+                }
+            }
+        };
+
+        // 生成产量信息内容的函数
+        function generateYieldCategoryContent(data, category) {
+            const fields = yieldDataCategories[category].fields;
             let content = "";
 
             for (const [label, field] of Object.entries(fields)) {
@@ -304,7 +404,35 @@
             return content;
         }
 
-        function createInfoWindowContent(point) {
+        // 生成N2O信息内容的函数
+        function generateN2OCategoryContent(data, category) {
+            const fields = n2oDataCategories[category].fields;
+            let content = "";
+
+            for (const [label, field] of Object.entries(fields)) {
+                let value, unit = '';
+                if (Array.isArray(field)) {
+                    value = data[field[0]];
+                    unit = field[1];
+                } else {
+                    value = data[field];
+                }
+
+                // 处理NaN值
+                if (value === "NaN") {
+                    value = "数据缺失";
+                    unit = "";
+                }
+
+                if (value !== undefined && value !== '') {
+                    content += `<p>${label}: ${value}${unit}</p>`;
+                }
+            }
+
+            return content;
+        }
+
+        function createYieldInfoWindowContent(point) {
             let content = `
 <div style="
     padding: 20px;
@@ -324,12 +452,12 @@
         align-items: center;
     ">
         <img src="IMG/茶叶.png" style="width: 24px; height: 24px; margin-right: 8px;">
-        茶叶种植点详细信息
+        茶叶产量数据详细信息
     </h3>
 `;
 
             // 创建分类折叠面板
-            for (const [category, categoryInfo] of Object.entries(dataCategories)) {
+            for (const [category, categoryInfo] of Object.entries(yieldDataCategories)) {
                 const categoryId = `category-${category}-${point.longitude}-${point.latitude}`.replace(/\s+/g, '-');
 
                 content += `
@@ -376,7 +504,7 @@
                 margin-top: -1px;
                 border-radius: 0 0 8px 8px;
              ">
-            ${generateCategoryContent(point, category)}
+            ${generateYieldCategoryContent(point, category)}
         </div>
     </div>
 `;
@@ -386,9 +514,91 @@
             return content;
         }
 
-        // 重写生成分类内容的函数以添加更好的样式
-        function generateCategoryContent(data, category) {
-            const fields = dataCategories[category].fields;
+        function createN2OInfoWindowContent(point) {
+            let content = `
+<div style="
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 350px;
+    font-family: 'Microsoft YaHei', sans-serif;
+">
+    <h3 style="
+        margin: 0 0 20px 0;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #2c9678;
+        color: #2c9678;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    ">
+        <img src="IMG/茶叶2.png" style="width: 24px; height: 24px; margin-right: 8px;">
+        茶叶N2O排放数据详细信息
+    </h3>
+`;
+
+            // 创建分类折叠面板
+            for (const [category, categoryInfo] of Object.entries(n2oDataCategories)) {
+                const categoryId = `n2o-category-${category}-${point.longitude}-${point.latitude}`.replace(/\s+/g, '-');
+
+                content += `
+    <div style="margin-bottom: 12px;">
+        <div onclick="toggleCategory('${categoryId}')" 
+             style="
+                cursor: pointer;
+                padding: 10px 15px;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                transition: background-color 0.3s;
+                border: 1px solid #e9ecef;
+                &:hover {
+                    background-color: #e9ecef;
+                }
+             ">
+            <span style="
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                color: #495057;
+            ">
+                <span style="margin-right: 8px; font-size: 16px;">${categoryInfo.icon}</span>
+                ${category}
+            </span>
+            <span id="arrow-${categoryId}" 
+                  style="
+                    transform: rotate(-90deg);
+                    transition: transform 0.3s;
+                    color: #6c757d;
+                    font-size: 12px;
+                  ">▼</span>
+        </div>
+        <div id="${categoryId}" 
+             style="
+                display: none;
+                padding: 15px;
+                background-color: #fff;
+                border: 1px solid #e9ecef;
+                border-top: none;
+                margin-top: -1px;
+                border-radius: 0 0 8px 8px;
+             ">
+            ${generateN2OCategoryContent(point, category)}
+        </div>
+    </div>
+`;
+            }
+
+            content += `</div>`;
+            return content;
+        }
+
+        // 重写生成产量分类内容的函数以添加更好的样式
+        function generateYieldCategoryContent(data, category) {
+            const fields = yieldDataCategories[category].fields;
             let content = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px;">';
 
             for (const [label, field] of Object.entries(fields)) {
@@ -398,6 +608,38 @@
                     unit = field[1];
                 } else {
                     value = data[field];
+                }
+
+                if (value !== undefined && value !== '') {
+                    content += `
+        <div style="color: #6c757d; text-align: right; padding-right: 10px;">${label}:</div>
+        <div style="color: #212529; font-weight: 500;">${value}${unit}</div>
+    `;
+                }
+            }
+
+            content += '</div>';
+            return content;
+        }
+
+        // 重写生成N2O分类内容的函数以添加更好的样式
+        function generateN2OCategoryContent(data, category) {
+            const fields = n2oDataCategories[category].fields;
+            let content = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px;">';
+
+            for (const [label, field] of Object.entries(fields)) {
+                let value, unit = '';
+                if (Array.isArray(field)) {
+                    value = data[field[0]];
+                    unit = field[1];
+                } else {
+                    value = data[field];
+                }
+
+                // 处理NaN值
+                if (value === "NaN") {
+                    value = "数据缺失";
+                    unit = "";
                 }
 
                 if (value !== undefined && value !== '') {
@@ -438,7 +680,7 @@
             }
         };
 
-        // 创建标记时的修改
+        // 加载产量数据并创建标记
         Papa.parse('database_yield.csv', {
             download: true,
             header: true,
@@ -452,14 +694,14 @@
                         if (!isNaN(longitude) && !isNaN(latitude)) {
                             const marker = new AMap.Marker({
                                 position: [longitude, latitude],
-                                title: '茶叶种植点',
+                                title: '茶叶产量数据点',
                                 icon: new AMap.Icon(teaIcon),
                                 offset: new AMap.Pixel(-16, -16),
-                                extData: { isMarker: true }  // 添加标记标识
+                                extData: { isMarker: true, type: 'yield' }  // 添加标记标识和类型
                             });
 
                             const infoWindow = new AMap.InfoWindow({
-                                content: createInfoWindowContent(point),
+                                content: createYieldInfoWindowContent(point),
                                 offset: new AMap.Pixel(0, -30),
                                 isCustom: true
                             });
@@ -480,7 +722,53 @@
                 });
             },
             error: function (error) {
-                console.error("CSV 加载错误:", error.message);
+                console.error("产量数据CSV加载错误:", error.message);
+            }
+        });
+
+        // 加载N2O数据并创建标记
+        Papa.parse('database_N2O.csv', {
+            download: true,
+            header: true,
+            encoding: "UTF-8",
+            complete: function (results) {
+                results.data.forEach(point => {
+                    if (point.longitude && point.latitude) {
+                        const longitude = parseFloat(point.longitude);
+                        const latitude = parseFloat(point.latitude);
+
+                        if (!isNaN(longitude) && !isNaN(latitude)) {
+                            const marker = new AMap.Marker({
+                                position: [longitude, latitude],
+                                title: '茶叶N2O排放数据点',
+                                icon: new AMap.Icon(teaN2OIcon),
+                                offset: new AMap.Pixel(-16, -16),
+                                extData: { isMarker: true, type: 'n2o' }  // 添加标记标识和类型
+                            });
+
+                            const infoWindow = new AMap.InfoWindow({
+                                content: createN2OInfoWindowContent(point),
+                                offset: new AMap.Pixel(0, -30),
+                                isCustom: true
+                            });
+
+                            marker.on('click', () => {
+                                // 如果已经有打开的信息窗体，先关闭它
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                }
+                                // 打开新的信息窗体并更新引用
+                                infoWindow.open(map, marker.getPosition());
+                                currentInfoWindow = infoWindow;
+                            });
+
+                            marker.setMap(map);
+                        }
+                    }
+                });
+            },
+            error: function (error) {
+                console.error("N2O数据CSV加载错误:", error.message);
             }
         });
     </script>

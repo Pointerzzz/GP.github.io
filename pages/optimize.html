@@ -29,7 +29,7 @@
 
 <body>
     <div id="loader">
-        <img src="../IMG/loader.gif" alt="Loading...">
+        <img src="../img/loader.gif" alt="Loading...">
     </div>
 
     <div class="header">
@@ -43,7 +43,7 @@
                 <div class="collapse navbar-collapse" id="navmenu">
                     <ul class="nav-list navbar-nav ms-auto">
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="../index.html">
                                     <div class="nav-link">首页</div>
                                 </a>
@@ -51,15 +51,25 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
-                            <li class="cool-link first"><a href="optimize.html">
+                            <img class="ims" src="../img/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
-                                <ul></ul>
+                                <ul>
+                                    <li><a href="optimize.html">
+                                            <div><img src="../img/icon2.png" alt="">产量最大化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../img/icon2.png" alt="">施氮量Minimize</div>
+                                        </a></li>
+                                    <li><a href="optimize_N2O.html">
+                                            <div><img src="../img/icon2.png" alt="">N2O Minimize</div>
+                                        </a></li>
+                                </ul>
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="carbonFootprint.html">
                                     <div class="nav-link">碳足迹</div>
                                 </a>
@@ -67,19 +77,19 @@
                             </li>
                         </div>
                         <div class="second nav-item">
-                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <img class="ims" src="../img/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">下载中心</div>
                                 </a>
                                 <ul>
                                     <li><a href="download_model.html">
-                                            <div><img src="../IMG/icon2.png" alt="">模型下载</div>
+                                            <div><img src="../img/icon2.png" alt="">模型下载</div>
                                         </a></li>
                                     <li><a href="download_data.html">
-                                            <div><img src="../IMG/icon2.png" alt="">数据下载</div>
+                                            <div><img src="../img/icon2.png" alt="">数据下载</div>
                                         </a></li>
                                     <li><a href="download_png.html">
-                                            <div><img src="../IMG/icon2.png" alt="">性能图片下载</div>
+                                            <div><img src="../img/icon2.png" alt="">性能图片下载</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -92,7 +102,7 @@
 
     <div class="container">
         <div class="title-section">
-            <h1 class="main-title">茶叶产量优化分析系统</h1>
+            <h1 class="main-title">茶叶产量优化分析--产量最大化</h1>
         </div>
 
         <div class="sub-title">优化点位分布</div>
@@ -103,6 +113,7 @@
             <div id="barChart" class="chart-container"></div>
             <div id="scatterChart" class="chart-container"></div>
         </div>
+        <img src="../figures/yield/overall_improvement.png" alt="" style="width: 100%;">
     </div>
 
     <div id="comparisonModal" class="modal-overlay"
@@ -253,7 +264,7 @@
 
         // 加载优化后的数据及创建图表
         function loadOptimizedData() {
-            Papa.parse('../optimized_tea.csv', {
+            Papa.parse('../figures/yield/optimized_tea_yield.csv', {
                 download: true,
                 header: true,
                 encoding: "UTF-8",
@@ -496,7 +507,7 @@
                 img.classList.add("fade-out");
 
                 img.addEventListener("transitionend", function () {
-                    img.src = "../IMG/icon2.png";
+                    img.src = "../img/icon2.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
@@ -513,7 +524,7 @@
 
                 img.addEventListener("transitionend", function () {
                     secondChild.style.display = "none";
-                    img.src = "../IMG/icon1.png";
+                    img.src = "../img/icon1.png";
                     img.classList.remove("fade-out");
                 }, { once: true });
             });
