@@ -35,7 +35,7 @@
     <div class="header">
         <div>
             <nav class="navbar navbar-expand-md">
-                <!-- <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a> -->
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
                 <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                     <span class="navbar-toggler-icon"></span>
@@ -52,18 +52,27 @@
                         </div>
                         <div class="second nav-item">
                             <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./shap.html">
+                                    <div class="nav-link">SHAP分析</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
                                 <ul>
                                     <li><a href="optimize.html">
-                                            <div><img src="../IMG/icon2.png" alt="">产量最大化</div>
-                                        </a></li>
-                                    <li><a href="optimize_N.html">
-                                            <div><img src="../IMG/icon2.png" alt="">施氮量Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-产量最大化</div>
                                         </a></li>
                                     <li><a href="optimize_N2O.html">
-                                            <div><img src="../IMG/icon2.png" alt="">N2O Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-N2O最小化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../IMG/icon2.png" alt="">NSGAII-产量 & N</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -102,7 +111,7 @@
 
     <div class="container">
         <div class="title-section">
-            <h1 class="main-title">茶叶N2O排放优化分析</h1>
+            <h1 class="main-title">PSO逐点优化--N2O emission</h1>
         </div>
 
         <div class="sub-title">优化点位分布</div>
@@ -113,7 +122,7 @@
             <div id="barChart" class="chart-container"></div>
             <div id="scatterChart" class="chart-container"></div>
         </div>
-        <img src="../figures/N2O/overall_improvement.png" alt="" style="width: 100%;">
+        <img src="../data/optimize/PSO/N2O/overall_improvement.png" alt="" style="width: 100%;">
     </div>
 
     <div id="comparisonModal" class="modal-overlay"
@@ -212,13 +221,13 @@
                 margin-bottom: 20px;
             ">
                 <div style="text-align: right; color: #6c757d;">原始N2O排放:</div>
-                <div style="font-weight: 500;">${point.original_n2o} kg N2O-N/hm²</div>
+                <div style="font-weight: 500;">${point.original_n2o}</div>
                 
                 <div style="text-align: right; color: #6c757d;">优化N2O排放:</div>
-                <div style="font-weight: 500;">${point.optimized_n2o} kg N2O-N/hm²</div>
+                <div style="font-weight: 500;">${point.optimized_n2o}</div>
                 
                 <div style="text-align: right; color: #6c757d;">减排量:</div>
-                <div style="font-weight: 500;">${point.reduction} kg N2O-N/hm²</div>
+                <div style="font-weight: 500;">${point.reduction}</div>
                 
                 <div style="text-align: right; color: #6c757d;">减排百分比:</div>
                 <div style="font-weight: 500;">${point.reduction_percent}%</div>
@@ -248,7 +257,7 @@
         }
 
         // 加载原始数据
-        Papa.parse('../tea_N2O_test.csv', {
+        Papa.parse('../database_N2O_test.csv', {
             download: true,
             header: true,
             encoding: "UTF-8",
@@ -264,7 +273,7 @@
 
         // 加载优化后的数据及创建图表
         function loadOptimizedData() {
-            Papa.parse('../figures/N2O/optimized_tea_n2o_results.csv', {
+            Papa.parse('../data/optimize/PSO/N2O/optimized_tea_n2o_results.csv', {
                 download: true,
                 header: true,
                 encoding: "UTF-8",
@@ -339,7 +348,7 @@
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'N2O排放 (kg N2O-N/hm²)'
+                    name: 'N2O排放'
                 },
                 series: [
                     {
@@ -373,11 +382,11 @@
                 },
                 xAxis: {
                     type: 'value',
-                    name: '原始N2O排放 (kg N2O-N/hm²)'
+                    name: '原始N2O排放'
                 },
                 yAxis: {
                     type: 'value',
-                    name: '优化N2O排放 (kg N2O-N/hm²)'
+                    name: '优化N2O排放'
                 },
                 series: [{
                     type: 'scatter',
@@ -426,17 +435,17 @@
             const features = [
                 { key: 'longitude', label: '经度', unit: '°' },
                 { key: 'latitude', label: '纬度', unit: '°' },
-                { key: 'Altitude(m)', label: '海拔', unit: 'm' },
-                { key: 'Precipitation(mm)', label: '降水量', unit: 'mm' },
-                { key: 'Average Temperature (°C)', label: '平均温度', unit: '°C' },
-                { key: 'Lowest Temperature (°C)', label: '最低温度', unit: '°C' },
-                { key: 'Highest Temperature (°C)', label: '最高温度', unit: '°C' },
+                { key: 'Altitude', label: '海拔', unit: 'm' },
+                { key: 'Precipitation', label: '降水量', unit: 'mm' },
+                { key: 'Average Temperature', label: '平均温度', unit: '°C' },
+                { key: 'Lowest Temperature', label: '最低温度', unit: '°C' },
+                { key: 'Highest Temperature', label: '最高温度', unit: '°C' },
                 { key: 'pH', label: 'pH值', unit: '' },
-                { key: 'TN(g/kg-1)', label: '全氮', unit: 'g/kg' },
-                { key: 'SOC(%)', label: '有机碳', unit: '%' },
-                { key: 'depth(cm)', label: '深度', unit: 'cm' },
-                { key: 'mineral_N quantity(kg/y/hm2)', label: '矿物氮用量', unit: 'kg/y/hm2' },
-                { key: 'organic_N quantity(kg/y/hm2)', label: '有机氮用量', unit: 'kg/y/hm2' }
+                { key: 'TN', label: '全氮', unit: 'g/kg' },
+                { key: 'SOC', label: '有机碳', unit: '%' },
+                { key: 'depth', label: '深度', unit: 'cm' },
+                { key: 'mineral_N quantity', label: '矿物氮用量', unit: 'kg/y/hm2' },
+                { key: 'organic_N quantity', label: '有机氮用量', unit: 'kg/y/hm2' }
             ];
 
             // 生成表格行

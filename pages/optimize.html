@@ -35,7 +35,7 @@
     <div class="header">
         <div>
             <nav class="navbar navbar-expand-md">
-                <!-- <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a> -->
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
                 <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                     <span class="navbar-toggler-icon"></span>
@@ -52,18 +52,27 @@
                         </div>
                         <div class="second nav-item">
                             <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./shap.html">
+                                    <div class="nav-link">SHAP分析</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
                                 <ul>
                                     <li><a href="optimize.html">
-                                            <div><img src="../IMG/icon2.png" alt="">产量最大化</div>
-                                        </a></li>
-                                    <li><a href="optimize_N.html">
-                                            <div><img src="../IMG/icon2.png" alt="">施氮量Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-产量最大化</div>
                                         </a></li>
                                     <li><a href="optimize_N2O.html">
-                                            <div><img src="../IMG/icon2.png" alt="">N2O Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-N2O最小化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../IMG/icon2.png" alt="">NSGAII-产量 & N</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -102,7 +111,7 @@
 
     <div class="container">
         <div class="title-section">
-            <h1 class="main-title">茶叶产量优化分析--产量最大化</h1>
+            <h1 class="main-title">PSO逐点优化--产量最大化</h1>
         </div>
 
         <div class="sub-title">优化点位分布</div>
@@ -113,7 +122,7 @@
             <div id="barChart" class="chart-container"></div>
             <div id="scatterChart" class="chart-container"></div>
         </div>
-        <img src="../figures/yield/overall_improvement.png" alt="" style="width: 100%;">
+        <img src="../data/optimize/PSO/yield/overall_improvement.png" alt="" style="width: 100%;">
     </div>
 
     <div id="comparisonModal" class="modal-overlay"
@@ -248,7 +257,7 @@
         }
 
         // 加载原始数据
-        Papa.parse('../test_tea.csv', {
+        Papa.parse('../database_yield.csv', {
             download: true,
             header: true,
             encoding: "UTF-8",
@@ -264,7 +273,7 @@
 
         // 加载优化后的数据及创建图表
         function loadOptimizedData() {
-            Papa.parse('../figures/yield/optimized_tea_yield.csv', {
+            Papa.parse('../data/optimize/PSO/Yield/optimized_tea_yield.csv', {
                 download: true,
                 header: true,
                 encoding: "UTF-8",
@@ -426,27 +435,23 @@
             const features = [
                 { key: 'longitude', label: '经度', unit: '°' },
                 { key: 'latitude', label: '纬度', unit: '°' },
-                { key: 'Altitude(m)', label: '海拔', unit: 'm' },
-                { key: 'Precipitation(mm)', label: '降水量', unit: 'mm' },
-                { key: 'Average Temperature (°C)', label: '平均温度', unit: '°C' },
+                { key: 'Altitude', label: '海拔', unit: 'm' },
+                { key: 'Precipitation', label: '降水量', unit: 'mm' },
+                { key: 'Average Temperature', label: '平均温度', unit: '°C' },
                 { key: 'pH', label: 'pH值', unit: '' },
                 { key: 'TN(g/kg-1)', label: '全氮', unit: 'g/kg' },
-                { key: 'AP (mg/kg-1)', label: '有效磷', unit: 'mg/kg' },
-                { key: 'AK(mg/kg-1)', label: '速效钾', unit: 'mg/kg' },
                 { key: 'SOC(%)', label: '有机碳', unit: '%' },
                 { key: 'Large-leaved variety', label: '大叶种', unit: '' },
                 { key: 'Medium-leaved variety', label: '中叶种', unit: '' },
                 { key: 'small-leaved variety', label: '小叶种', unit: '' },
-                { key: 'Years of planting', label: '种植年限', unit: '年' },
-                { key: 'Replicates', label: '重复实验', unit: '次' },
                 { key: 'mineral fertilizer', label: '矿物肥料', unit: '' },
                 { key: 'organic fertilizer', label: '有机肥料', unit: '' },
                 { key: 'controlled-released fertilizer', label: '控释肥料', unit: '' },
                 { key: 'mix fertilizer', label: '混合肥料', unit: '' },
-                { key: 'N quantity(kg/y/hm2)', label: '氮肥用量', unit: 'kg/y/hm2' },
-                { key: 'P2O5 quantity(kg/y/hm2)', label: '磷肥用量', unit: 'kg/y/hm2' },
-                { key: 'K2O quantity(kg/y/hm2)', label: '钾肥用量', unit: 'kg/y/hm2' },
-                { key: 'organic fertilizer quantity(kg`y/hm2)', label: '有机肥用量', unit: 'kg/y/hm2' }
+                { key: 'N quantity', label: '氮肥用量', unit: 'kg/ha' },
+                { key: 'P2O5 quantity', label: '磷肥用量', unit: 'kg/ha' },
+                { key: 'K2O quantity', label: '钾肥用量', unit: 'kg/ha' },
+                { key: 'organic fertilizer', label: '有机肥用量', unit: 'kg/ha' }
             ];
 
             // 生成表格行

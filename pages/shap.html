@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SHAP分析</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap">
+    <link rel="stylesheet" type="text/css" href="../assets/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/navbar.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/shap.css">
+    <link rel="stylesheet" href="../assets/css/optimize.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=2.0&key=e769a3af2b315d06adf04e42841ec191"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+        .download-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', function () {
+            var loader = document.getElementById('loader');
+
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 2000);
+        });
+    </script>
+</head>
+
+<body>
+    <div id="loader">
+        <img src="../IMG/loader.gif" alt="Loading...">
+    </div>
+
+    <div class="header">
+        <div>
+            <nav class="navbar navbar-expand-md">
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navmenu">
+                    <ul class="nav-list navbar-nav ms-auto">
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class="cool-link first"><a href="../index.html">
+                                    <div class="nav-link">首页</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./shap.html">
+                                    <div class="nav-link">SHAP分析</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">目标优化</div>
+                                </a>
+                                <ul>
+                                    <li><a href="optimize.html">
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-产量最大化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N2O.html">
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-N2O最小化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../IMG/icon2.png" alt="">NSGAII-产量 & N</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class="cool-link first"><a href="carbonFootprint.html">
+                                    <div class="nav-link">碳足迹</div>
+                                </a>
+                                <ul></ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class="cool-link first"><a href="#">
+                                    <div class="nav-link">下载中心</div>
+                                </a>
+                                <ul>
+                                    <li><a href="download_model.html">
+                                            <div><img src="../IMG/icon2.png" alt="">模型下载</div>
+                                        </a></li>
+                                    <li><a href="download_data.html">
+                                            <div><img src="../IMG/icon2.png" alt="">数据下载</div>
+                                        </a></li>
+                                    <li><a href="download_png.html">
+                                            <div><img src="../IMG/icon2.png" alt="">性能图片下载</div>
+                                        </a></li>
+                                </ul>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="title-section">
+            <h1 class="main-title">SHAP分析</h1>
+        </div>
+        <!-- 轮播图 -->
+        <div class="carousel-container">
+            <div id="carousel"></div>
+            <button class="carousel-control prev-slide"></button>
+            <button class="carousel-control next-slide"></button>
+        </div>
+        <!-- 图片放大模态框 -->
+        <div id="imageModal" class="image-modal">
+            <span class="image-modal-close">&times;</span>
+            <div class="image-modal-content">
+                <img id="modalImage" src="" alt="放大图片">
+            </div>
+        </div>
+        <button id="downloadCsvBtn" class="download-btn">下载全世界茶叶种植点SHAP文件</button>
+        <div id="nsgaii-optimization-table"></div>
+
+        <div class="shap-image-container">
+            <div class="shap-image-wrapper">
+                <h3>训练集SHAP图</h3>
+                <img src="../data/explain/tea_trained_shap_summary.png" alt="训练集SHAP图">
+            </div>
+            <div class="shap-image-wrapper">
+                <h3>测试集SHAP图</h3>
+                <img src="../data/explain/tea_shap_summary.png" alt="测试集SHAP图">
+            </div>
+        </div>
+
+        <div class="shap-explanation">
+            <p>从上图可以看出，两张SHAP图的最重要特征均为N qunantity施氮量，且呈正相关关系。而在测试集上，而对于更高SHAP值的点，呈现负相关，这也和实际农业生产相符：施用化肥量对于产量的提升不是越多越好的。
+            </p>
+        </div>
+        <div class="title-section">
+            <h1 class="main-title">偏依赖分析</h1>
+        </div>
+        <div class="shap-image-container">
+            <div class="shap-image-wrapper">
+                <h3>无机/有机肥与N quantity的偏依赖分析</h3>
+                <img src="../data/prediction/pd_yield.png" alt="训练集SHAP图">
+            </div>
+            <div class="shap-image-wrapper">
+                <h3>无机/有机肥与单位产量N2O排放的偏依赖分析</h3>
+                <img src="../data/prediction/pd_emission_per_yield.png" alt="测试集SHAP图">
+            </div>
+        </div>
+
+        <div class="shap-explanation">
+            <p>从左上图可以看出，无论是无机/有机肥，与Yield都是呈正相关关系的，这与SHAP图的结论一致
+            </p>
+            <p>从右上图可以看出，对于无机肥而言，单位产量N2O排放刚开始呈现下降趋势，说明对于同样施氮量，N2O排放的提升量小于Yield的提升量。而在一定程度后，曲线呈上升趋势，说明N2O排放的提升量大于Yield的提升量，这也与shap图的分析一致；
+                而对于有机肥而言，施用量整体均呈下降趋势，说明有机肥相较于普通的，是更优质的一种肥料。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let tableData = [];
+
+        // 使用 Papa Parse 读取 CSV 文件
+        function loadCSVData() {
+            Papa.parse('../data/explain/tea_shap_values.csv', {
+                download: true,
+                header: true,
+                complete: function (results) {
+                    // 只取前10条数据
+                    tableData = results.data.slice(0, 10);
+                    renderTable();
+                    setupDownloadButton(results.data);
+                },
+                error: function (error) {
+                    console.error('读取 CSV 文件出错:', error);
+                }
+            });
+        }
+
+        // 创建表头映射，使列名更加可读
+        const columnMapping = {
+            'Altitude': '海拔',
+            'Precipitation': '降水量',
+            'Average Temperature': '平均温度',
+            'pH': 'pH值',
+            'TN': '总氮',
+            'SOC': '土壤有机碳',
+            'Large-leaved variety': '大叶品种',
+            'Medium-leaved variety': '中叶品种',
+            'small-leaved variety': '小叶品种',
+            'mineral fertilizer': '矿物肥料',
+            'organic fertilizer': '有机肥料',
+            'controlled-released fertilizer': '缓释肥料',
+            'mix fertilizer': '混合肥料',
+            'N quantity': '氮肥用量',
+            'P2O5 quantity': 'P2O5用量',
+            'K2O quantity': 'K2O用量',
+            'organic fertilizer.1': '有机肥料',
+        };
+
+        // 渲染表格
+        function renderTable() {
+            const tableContainer = document.getElementById('nsgaii-optimization-table');
+
+            const table = document.createElement('table');
+            table.className = 'optimization-table';
+
+            // 表头
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+
+            // 获取原始列名并转换
+            const headers = Object.keys(tableData[0]).map(key => columnMapping[key] || key);
+
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // 表body
+            const tbody = document.createElement('tbody');
+            tableData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+
+                Object.keys(row).forEach(key => {
+                    const cell = document.createElement('td');
+                    let value = row[key];
+
+                    // 尝试格式化数值
+                    if (!isNaN(parseFloat(value))) {
+                        value = parseFloat(value).toFixed(2);
+                    }
+
+                    cell.textContent = value;
+                    tr.appendChild(cell);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            table.appendChild(tbody);
+            tableContainer.innerHTML = ''; // 清空之前的内容
+            tableContainer.appendChild(table);
+        }
+
+        // 设置下载按钮功能
+        function setupDownloadButton(fullData) {
+            const downloadBtn = document.getElementById('downloadCsvBtn');
+            downloadBtn.addEventListener('click', () => {
+                // 使用 PapaParse 将数据转换为 CSV
+                const csv = Papa.unparse(fullData);
+
+                // 创建下载链接
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'tea_shap_values.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            });
+        }
+
+        // 页面加载后执行
+        window.addEventListener('DOMContentLoaded', loadCSVData);
+    </script>
+    <script>
+        var nav = document.querySelectorAll('.second');
+        for (var i = 0; i < nav.length; i++) {
+            nav[i].addEventListener('mouseenter', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.5s";
+                secondChild.style.display = "block";
+
+                setTimeout(function () {
+                    secondChild.style.opacity = "1";
+                }, 200);
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    img.src = "../IMG/icon2.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+
+            nav[i].addEventListener('mouseleave', function () {
+                var first = this.querySelector('.first');
+                var secondChild = first.children[1];
+                var img = this.querySelector('.ims');
+
+                secondChild.style.opacity = "0";
+                secondChild.style.transition = "opacity 0.3s";
+
+                img.classList.add("fade-out");
+
+                img.addEventListener("transitionend", function () {
+                    secondChild.style.display = "none";
+                    img.src = "../IMG/icon1.png";
+                    img.classList.remove("fade-out");
+                }, { once: true });
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            updateLayout(); // 手动触发一次更新布局函数
+        });
+
+        window.addEventListener('resize', function () {
+            updateLayout();
+        });
+
+        function updateLayout() {
+            if (window.innerWidth < 768) {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '15%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '0';
+                    ul.style.right = '80px';
+                    ul.style.width = '375%';
+                });
+            } else {
+                var img = document.getElementsByClassName('ims');
+                for (var i = 0; i < img.length; i++) {
+                    img[i].style.width = '22%';
+                }
+
+                var secondUls = document.querySelectorAll('.second ul');
+                secondUls.forEach(function (ul) {
+                    ul.style.top = '40px';
+                    ul.style.right = '-45px';
+                    ul.style.width = '268%';
+                });
+            }
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mapImages = [
+                { src: '../data/explain/maps/Altitude.png', title: 'Altitude' },
+                { src: '../data/explain/maps/Average_Temperature.png', title: 'Average Temperature' },
+                { src: '../data/explain/maps/K2O.png', title: 'K2O' },
+                { src: '../data/explain/maps/N_quantity.png', title: 'N Quantity' },
+                { src: '../data/explain/maps/ON.png', title: 'ON' },
+                { src: '../data/explain/maps/P2O5.png', title: 'P2O5' },
+                { src: '../data/explain/maps/PH.png', title: 'pH' },
+                { src: '../data/explain/maps/Precipitation.png', title: 'Precipitation' },
+                { src: '../data/explain/maps/SOC.png', title: 'Soil Organic Carbon' },
+                { src: '../data/explain/maps/TN.png', title: 'Total Nitrogen' }
+            ];
+
+            const carousel = document.getElementById('carousel');
+            const prevSlide = document.querySelector('.prev-slide');
+            const nextSlide = document.querySelector('.next-slide');
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.querySelector('.image-modal-close');
+            const downloadModalImage = document.getElementById('downloadModalImage');
+
+            let currentSlide = 0;
+
+            // 渲染轮播图
+            function renderCarousel() {
+                carousel.innerHTML = '';
+                mapImages.forEach((image, index) => {
+                    const slide = document.createElement('div');
+                    slide.classList.add('carousel-slide');
+                    if (index === currentSlide) slide.classList.add('active');
+
+                    const title = document.createElement('h3');
+                    title.textContent = image.title;
+                    title.classList.add('carousel-title');
+                    slide.appendChild(title);
+
+                    const img = document.createElement('img');
+                    img.src = image.src;
+                    img.alt = image.title;
+
+                    // 点击图片放大
+                    img.addEventListener('click', () => {
+                        imageModal.style.display = 'block';
+                        modalImage.src = image.src;
+                    });
+
+                    slide.appendChild(img);
+                    carousel.appendChild(slide);
+                });
+            }
+
+            // 关闭模态框
+            function closeModal() {
+                imageModal.style.display = 'none';
+            }
+
+            // 切换到下一张幻灯片
+            function nextSlideFunc() {
+                const slides = document.querySelectorAll('.carousel-slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % mapImages.length;
+                slides[currentSlide].classList.add('active');
+            }
+
+            // 切换到上一张幻灯片
+            function prevSlideFunc() {
+                const slides = document.querySelectorAll('.carousel-slide');
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide - 1 + mapImages.length) % mapImages.length;
+                slides[currentSlide].classList.add('active');
+            }
+
+            // 初始化轮播图
+            renderCarousel();
+
+            // 下一张和上一张按钮事件
+            nextSlide.addEventListener('click', nextSlideFunc);
+            prevSlide.addEventListener('click', prevSlideFunc);
+
+            // 自动轮播（可选）
+            setInterval(nextSlideFunc, 5000);
+
+            // 关闭模态框事件
+            modalClose.addEventListener('click', closeModal);
+
+            // 点击模态框外部也可以关闭
+            imageModal.addEventListener('click', function (event) {
+                if (event.target === imageModal) {
+                    closeModal();
+                }
+            });
+
+            // 下载图片功能
+            downloadModalImage.addEventListener('click', function () {
+                const currentImage = modalImage.src;
+                const link = document.createElement('a');
+                link.href = currentImage;
+                link.download = currentImage.split('/').pop();
+                link.click();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

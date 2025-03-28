@@ -38,20 +38,23 @@
             background: white;
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
             z-index: 100;
             font-family: 'Microsoft YaHei', sans-serif;
         }
+
         .legend-item {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
         }
+
         .legend-item img {
             width: 24px;
             height: 24px;
             margin-right: 8px;
         }
+
         .legend-title {
             font-weight: bold;
             margin-bottom: 8px;
@@ -70,7 +73,7 @@
     <div class="header">
         <div>
             <nav class="navbar navbar-expand-md">
-                <!-- <a href="" class="navbar-brand"><img src="./IMG/NJAU.png" alt="" class="logo"></a> -->
+                <a href="" class="navbar-brand"><img src="./IMG/NJAU.png" alt="" class="logo"></a>
                 <a href="" class="navbar-brand"><img src="./IMG/ZJU.png" alt="" class="logo2"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"
                     title="button">
@@ -89,19 +92,28 @@
                         </div>
                         <div class="second nav-item">
                             <img class="ims" src="./IMG/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./pages/shap.html">
+                                    <div class="nav-link">SHAP分析</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="./IMG/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
                                 <ul>
                                     <li><a href="./pages/optimize.html">
-                                        <div><img src="./IMG/icon2.png" alt="">产量最大化</div>
-                                    </a></li>
-                                <li><a href="./pages/optimize_N.html">
-                                        <div><img src="./IMG/icon2.png" alt="">施氮量Minimize</div>
-                                    </a></li>
-                                <li><a href="./pages/optimize_N2O.html">
-                                        <div><img src="./IMG/icon2.png" alt="">N2O Minimize</div>
-                                    </a></li>
+                                            <div><img src="./IMG/icon2.png" alt="">PSO-产量最大化</div>
+                                        </a></li>
+                                    <li><a href="./pages/optimize_N2O.html">
+                                            <div><img src="./IMG/icon2.png" alt="">PSO-N2O最小化</div>
+                                        </a></li>
+                                    <li><a href="./pages/optimize_N.html">
+                                            <div><img src="./IMG/icon2.png" alt="">NSGAII-产量 & N</div>
+                                        </a></li>
                                 </ul>
                             </li>
                         </div>
@@ -293,24 +305,22 @@
                 fields: {
                     "经度": "longitude",
                     "纬度": "latitude",
-                    "海拔": ["Altitude(m)", "m"]
+                    "海拔": ["Altitude", "m"]
                 }
             },
             "气象信息": {
                 icon: "🌤",
                 fields: {
-                    "年降水量": ["Precipitation(mm)", "mm"],
-                    "平均温度": ["Average Temperature (°C)", "°C"]
+                    "年降水量": ["Precipitation", "mm"],
+                    "平均温度": ["Average Temperature", "°C"]
                 }
             },
             "土壤信息": {
                 icon: "🌱",
                 fields: {
                     "pH值": "pH",
-                    "全氮含量": ["TN(g/kg-1)", "g/kg"],
-                    "有效磷": ["AP (mg/kg-1)", "mg/kg"],
-                    "速效钾": ["AK(mg/kg-1)", "mg/kg"],
-                    "有机碳": ["SOC(%)", "%"]
+                    "全氮含量": ["TN", "g/kg"],
+                    "有机碳": ["SOC", "%"]
                 }
             },
             "品种信息": {
@@ -325,16 +335,16 @@
             "施肥信息": {
                 icon: "💊",
                 fields: {
-                    "化肥用量": ["N quantity(kg/y/hm2)", "kg/y/hm²"],
-                    "磷肥用量": ["P2O5 quantity(kg/y/hm2)", "kg/y/hm²"],
-                    "钾肥用量": ["K2O quantity(kg/y/hm2)", "kg/y/hm²"],
-                    "有机肥用量": ["organic fertilizer quantity(kg`y/hm2)", "kg/y/hm²"]
+                    "氮肥用量": ["N quantity", "kg/ha"],
+                    "磷肥用量": ["P2O5 quantity", "kg/ha"],
+                    "钾肥用量": ["K2O quantity", "kg/ha"],
+                    "有机肥用量": ["organic fertilizer", "kg/ha"]
                 }
             },
             "产量信息": {
                 icon: "📊",
                 fields: {
-                    "鲜叶产量": ["Fresh Shoot Yield(kg/667m2)_MEAN", "kg/667m²"]
+                    "鲜叶产量": ["Yield", "kg/667m²"]
                 }
             }
         };
@@ -346,91 +356,41 @@
                 fields: {
                     "经度": "longitude",
                     "纬度": "latitude",
-                    "海拔": ["Altitude(m)", "m"]
+                    "海拔": ["Altitude", "m"]
                 }
             },
             "气象信息": {
                 icon: "🌤",
                 fields: {
-                    "年降水量": ["Precipitation(mm)", "mm"],
-                    "平均温度": ["Average Temperature (C)", "°C"],
-                    "最低温度": ["Lowest Temperature (C)", "°C"],
-                    "最高温度": ["Highest Temperature (C)", "°C"]
+                    "年降水量": ["Precipitation", "mm"],
+                    "平均温度": ["Average Temperature", "°C"],
+                    "最低温度": ["Lowest Temperature", "°C"],
+                    "最高温度": ["Highest Temperature", "°C"]
                 }
             },
             "土壤信息": {
                 icon: "🌱",
                 fields: {
                     "pH值": "pH",
-                    "全氮含量": ["TN(g/kg-1)", "g/kg"],
-                    "有机碳": ["SOC(%)", "%"],
-                    "土壤深度": ["depth(cm)", "cm"]
+                    "全氮含量": ["TN", "g/kg"],
+                    "有机碳": ["SOC", "%"],
+                    "土壤深度": ["depth", "cm"]
                 }
             },
             "施肥信息": {
                 icon: "💊",
                 fields: {
-                    "矿质氮肥用量": ["mineral_N quantity(kg/y/hm2)", "kg/y/hm²"],
-                    "有机氮肥用量": ["organic_N quantity(kg/y/hm2)", "kg/y/hm²"]
+                    "矿质氮肥用量": ["mineral_N quantity", "kg/y/hm²"],
+                    "有机氮肥用量": ["organic_N quantity", "kg/y/hm²"]
                 }
             },
             "氧化亚氮排放": {
                 icon: "💨",
                 fields: {
-                    "N2O排放量": ["N2O emission", "kg N2O-N/hm²/年"]
+                    "N2O排放量": ["N2O emission", ""]
                 }
             }
         };
-
-        // 生成产量信息内容的函数
-        function generateYieldCategoryContent(data, category) {
-            const fields = yieldDataCategories[category].fields;
-            let content = "";
-
-            for (const [label, field] of Object.entries(fields)) {
-                let value, unit = '';
-                if (Array.isArray(field)) {
-                    value = data[field[0]];
-                    unit = field[1];
-                } else {
-                    value = data[field];
-                }
-
-                if (value !== undefined && value !== '') {
-                    content += `<p>${label}: ${value}${unit}</p>`;
-                }
-            }
-
-            return content;
-        }
-
-        // 生成N2O信息内容的函数
-        function generateN2OCategoryContent(data, category) {
-            const fields = n2oDataCategories[category].fields;
-            let content = "";
-
-            for (const [label, field] of Object.entries(fields)) {
-                let value, unit = '';
-                if (Array.isArray(field)) {
-                    value = data[field[0]];
-                    unit = field[1];
-                } else {
-                    value = data[field];
-                }
-
-                // 处理NaN值
-                if (value === "NaN") {
-                    value = "数据缺失";
-                    unit = "";
-                }
-
-                if (value !== undefined && value !== '') {
-                    content += `<p>${label}: ${value}${unit}</p>`;
-                }
-            }
-
-            return content;
-        }
 
         function createYieldInfoWindowContent(point) {
             let content = `
@@ -596,7 +556,6 @@
             return content;
         }
 
-        // 重写生成产量分类内容的函数以添加更好的样式
         function generateYieldCategoryContent(data, category) {
             const fields = yieldDataCategories[category].fields;
             let content = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px;">';
@@ -610,11 +569,17 @@
                     value = data[field];
                 }
 
-                if (value !== undefined && value !== '') {
+                // 处理可能的空值或undefined
+                if (value !== undefined && value !== '' && value !== null) {
+                    // 对于数字类型，保留两位小数
+                    if (!isNaN(parseFloat(value))) {
+                        value = parseFloat(value).toFixed(2);
+                    }
+
                     content += `
-        <div style="color: #6c757d; text-align: right; padding-right: 10px;">${label}:</div>
-        <div style="color: #212529; font-weight: 500;">${value}${unit}</div>
-    `;
+    <div style="color: #6c757d; text-align: right; padding-right: 10px;">${label}:</div>
+    <div style="color: #212529; font-weight: 500;">${value}${unit}</div>
+`;
                 }
             }
 
@@ -622,7 +587,7 @@
             return content;
         }
 
-        // 重写生成N2O分类内容的函数以添加更好的样式
+        // 生成N2O分类内容的函数
         function generateN2OCategoryContent(data, category) {
             const fields = n2oDataCategories[category].fields;
             let content = '<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px;">';

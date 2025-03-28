@@ -51,7 +51,7 @@
     <div class="header">
         <div>
             <nav class="navbar navbar-expand-md">
-                <!-- <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a> -->
+                <a href="../index.html" class="navbar-brand"><img src="../IMG/NJAU.png" alt="" class="logo"></a>
                 <a href="../index.html" class="navbar-brand"><img src="../IMG/ZJU.png" alt="" class="logo2"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
                     <span class="navbar-toggler-icon"></span>
@@ -68,18 +68,27 @@
                         </div>
                         <div class="second nav-item">
                             <img class="ims" src="../IMG/icon1.png" alt="">
+                            <li class=" cool-link first"><a href="./shap.html">
+                                    <div class="nav-link">SHAP分析</div>
+                                </a>
+                                <ul>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="second nav-item">
+                            <img class="ims" src="../IMG/icon1.png" alt="">
                             <li class="cool-link first"><a href="#">
                                     <div class="nav-link">目标优化</div>
                                 </a>
                                 <ul>
                                     <li><a href="optimize.html">
-                                            <div><img src="../IMG/icon2.png" alt="">产量最大化</div>
-                                        </a></li>
-                                    <li><a href="optimize_N.html">
-                                            <div><img src="../IMG/icon2.png" alt="">施氮量Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-产量最大化</div>
                                         </a></li>
                                     <li><a href="optimize_N2O.html">
-                                            <div><img src="../IMG/icon2.png" alt="">N2O Minimize</div>
+                                            <div><img src="../IMG/icon2.png" alt="">PSO-N2O最小化</div>
+                                        </a></li>
+                                    <li><a href="optimize_N.html">
+                                            <div><img src="../IMG/icon2.png" alt="">NSGAII-产量 & N</div>
                                         </a></li>
                                 </ul>
                             </li>
@@ -125,19 +134,14 @@
     <div class="notebook">
         <h1 class="title">N2O数据集下载</h1>
         <div class="sticky-notes">
-            <a href="../database_N2O.csv" class="sticky-note" style="height:288px;width:535px;font-size: xx-large;transform: rotate(-3deg);top:150px;left: 50px;">
+            <a href="../database_N2O_test.csv" class="sticky-note" style="height:288px;width:535px;font-size: xx-large;transform: rotate(-3deg);top:150px;left: 50px;">
                 <h3>原始数据集</h3>
                 <p>database_N2O.csv</p>
                 <p>点击下载</p>
             </a>
-            <a href="../figures/N2O/optimized_tea_n2o_results.csv" class="sticky-note" style="height:220px;width:450px;font-size: xx-large;transform: rotate(2deg);top:150px;left: 650px;">
+            <a href="../data/optimize/PSO/N2O/optimized_tea_n2o_results.csv" class="sticky-note" style="height:220px;width:450px;font-size: xx-large;transform: rotate(2deg);top:150px;left: 650px;">
                 <h3>优化后数据集</h3>
                 <p>optimized_tea.csv</p>
-                <p>点击下载</p>
-            </a>
-            <a href="../tea_N2O_test.csv" class="sticky-note" style="height:288px;width:535px;font-size: xx-large;top:550px;left: 250px;">
-                <h3>测试数据集</h3>
-                <p>tea_N2O_test.csv</p>
                 <p>点击下载</p>
             </a>
         </div>

@@ -1,0 +1,253 @@
+.optimization-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+.optimization-table th,
+.optimization-table td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.optimization-table thead {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* 添加横向滚动条 */
+#nsgaii-optimization-table {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.download-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.download-btn:hover {
+    background-color: #45a049;
+}
+
+.shap-image-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.shap-image-wrapper {
+    width: 48%;
+    text-align: center;
+}
+
+.shap-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+.shap-explanation {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-align: justify;
+}
+
+
+/* 图片放大模态框 */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.image-modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 90%;
+    max-height: 90%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.image-modal-content img {
+    width: 100%;
+    height: auto;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.image-download-btn {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.shap-image-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.shap-image-wrapper {
+    width: 48%;
+    text-align: center;
+}
+
+.shap-image-wrapper img {
+    max-width: 100%;
+    height: auto;
+}
+
+.shap-explanation {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-align: justify;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    background-color: #eafae0;
+}
+
+.carousel-slide.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.carousel-slide img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    width: 55px;
+    height: 100px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
+}
+
+.carousel-control:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control.prev-slide {
+    left: 0px;
+    background: url('../../IMG/茶叶.png') no-repeat center center;
+    background-size: contain;
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.carousel-control.next-slide {
+    right: 0px;
+    background: url('../../IMG/茶叶.png') no-repeat center center;
+    background-size: contain;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.carousel-title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.carousel-slide img {
+    margin-top: 40px;
+    /* Add space for the title */
+}
